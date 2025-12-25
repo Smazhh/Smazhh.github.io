@@ -658,6 +658,9 @@
                         </div>
                         <div class="card">
                             <h3>Waves</h3>
+                            <div class="btnRow" style="margin-bottom: 10px;">
+                                <button class="btn" id="nPlay" type="button">Play animation</button>
+                            </div>
                             <canvas id="nCanvas" width="900" height="360" aria-label="Original and anti-noise waves"></canvas>
                             <p class="small">Top: Red = original · Blue = anti-noise</p>
                             <canvas id="nCanvasResult" width="900" height="260" aria-label="Resultant wave"></canvas>
@@ -1559,9 +1562,29 @@
             const nRandom = $("#nRandom");
             const nPhase = $("#nPhase");
             const nPhaseLabel = $("#nPhaseLabel");
+            const nPlay = $("#nPlay");
 
             const NOISE_FREQ = 4;
             const NOISE_AMP = 1;
+            const NOISE_ANIM_SPEED = 0.25;
+
+            let noiseAnimating = false;
+            let noiseLastTs = 0;
+            let noiseTime = 0;
+            let noiseRaf = 0;
+
+            function setNoisePlayLabel() {
+                if (!nPlay) return;
+                nPlay.textContent = noiseAnimating ? "Pause animation" : "Play animation";
+            }
+
+            function stopNoiseAnimation() {
+                noiseAnimating = false;
+                noiseLastTs = 0;
+                if (noiseRaf) cancelAnimationFrame(noiseRaf);
+                noiseRaf = 0;
+                setNoisePlayLabel();
+            }
 
             let noiseInitialized = false;
             function ensureNoiseInitialized() {
@@ -1580,6 +1603,9 @@
                 const phaseDeg = Number(nPhase.value);
                 const phaseRad = degToRad(phaseDeg);
                 const phaseFixed = Math.PI;
+
+                // Time animation: advances the waves smoothly across the graph.
+                const phaseTime = 2 * Math.PI * freq * noiseTime;
 
                 nPhaseLabel.textContent = `${Math.round(phaseDeg)}°`;
 
@@ -1642,11 +1668,11 @@
                 }
 
                 function wave(x) {
-                    return amp * Math.sin(2 * Math.PI * freq * x);
+                    return amp * Math.sin(2 * Math.PI * freq * x + phaseTime);
                 }
                 function antiFixed(x) {
                     // Keep the blue wave visually constant.
-                    return antiAmp * Math.sin(2 * Math.PI * freq * x + phaseFixed);
+                    return antiAmp * Math.sin(2 * Math.PI * freq * x + phaseFixed + phaseTime);
                 }
                 function antiApplied(x) {
                     // Keep intersections fixed while still reflecting phase difference.
@@ -1702,6 +1728,33 @@
                 nPhase.value = String(Math.round(rand(0, 360)));
                 drawNoise();
             });
+
+            if (nPlay) {
+                setNoisePlayLabel();
+                nPlay.addEventListener("click", () => {
+                    noiseAnimating = !noiseAnimating;
+                    setNoisePlayLabel();
+
+                    if (!noiseAnimating) {
+                        if (noiseRaf) cancelAnimationFrame(noiseRaf);
+                        noiseRaf = 0;
+                        noiseLastTs = 0;
+                        return;
+                    }
+
+                    const tick = (ts) => {
+                        if (!noiseAnimating) return;
+                        if (!noiseLastTs) noiseLastTs = ts;
+                        const dt = Math.min(0.05, (ts - noiseLastTs) / 1000);
+                        noiseLastTs = ts;
+                        noiseTime += dt * NOISE_ANIM_SPEED;
+                        drawNoise();
+                        noiseRaf = requestAnimationFrame(tick);
+                    };
+
+                    noiseRaf = requestAnimationFrame(tick);
+                });
+            }
 
             /**
              * Boot
