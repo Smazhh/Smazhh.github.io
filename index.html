@@ -697,32 +697,55 @@
             const panels = ["#panel-qr", "#panel-taylor", "#panel-gps", "#panel-anc"].map((id) => $(id));
             const emptyHelper = $("#emptyHelper");
 
+            const ACTIVE_MENU_STORAGE_KEY = "activeMenu";
+
             function setEmptyHelperVisible(show) {
                 if (!emptyHelper) return;
                 emptyHelper.classList.toggle("hidden", !show);
             }
 
-            function clearActiveTab() {
-                for (const t of tabs) {
-                    t.setAttribute("aria-selected", "false");
-                    t.tabIndex = 0;
+            function saveActiveMenu(menuId) {
+                try {
+                    if (!menuId) localStorage.removeItem(ACTIVE_MENU_STORAGE_KEY);
+                    else localStorage.setItem(ACTIVE_MENU_STORAGE_KEY, menuId);
+                } catch {
+                    // ignore storage failures
                 }
-                for (const p of panels) {
-                    p.classList.remove("isShown");
-                    p.classList.add("hidden");
-                }
-                setEmptyHelperVisible(true);
             }
 
-            function setActiveTab(tabId) {
-                const targetTab = tabs.find((t) => t.id === tabId);
-                if (!targetTab) return;
+            function normalizeMenuId(menuId) {
+                if (!menuId) return null;
+                const raw = String(menuId).trim();
+                if (!raw) return null;
+                if (tabs.some((t) => t.id === raw)) return raw;
 
-                // If you click the currently-selected tab, toggle back to the empty state.
-                if (targetTab.getAttribute("aria-selected") === "true") {
-                    clearActiveTab();
+                // Allow callers to pass "qr" / "panel-qr" etc.
+                const base = raw.replace(/^tab-/, "").replace(/^panel-/, "");
+                const tabId = `tab-${base}`;
+                return tabs.some((t) => t.id === tabId) ? tabId : null;
+            }
+
+            function activateMenu(menuId) {
+                const targetId = normalizeMenuId(menuId);
+
+                // Clear selection: hide all panels and show empty helper.
+                if (!targetId) {
+                    for (const t of tabs) {
+                        t.setAttribute("aria-selected", "false");
+                        t.tabIndex = 0;
+                    }
+                    for (const p of panels) {
+                        p.classList.remove("isShown");
+                        p.classList.add("hidden");
+                    }
+                    // Stop animation if the noise panel was running.
+                    try { stopNoiseAnimation(); } catch {}
+                    setEmptyHelperVisible(true);
                     return;
                 }
+
+                const targetTab = tabs.find((t) => t.id === targetId);
+                if (!targetTab) return;
 
                 for (const t of tabs) {
                     const selected = t === targetTab;
@@ -759,8 +782,17 @@
                 if (targetPanelId === "panel-anc") ensureNoiseInitialized();
             }
 
+            function chooseMenu(menuId) {
+                const id = normalizeMenuId(menuId);
+                activateMenu(id);
+                saveActiveMenu(id);
+            }
+
             for (const t of tabs) {
-                t.addEventListener("click", () => setActiveTab(t.id));
+                t.addEventListener("click", () => {
+                    const isSelected = t.getAttribute("aria-selected") === "true";
+                    chooseMenu(isSelected ? null : t.id);
+                });
                 t.addEventListener("keydown", (e) => {
                     if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
                     e.preventDefault();
@@ -768,7 +800,7 @@
                     const idx = tabs.indexOf(t);
                     const next = tabs[(idx + dir + tabs.length) % tabs.length];
                     next.focus();
-                    setActiveTab(next.id);
+                    chooseMenu(next.id);
                 });
             }
 
@@ -1760,14 +1792,20 @@
              * Boot
              */
             function boot() {
-                // Intentionally do nothing on load.
-                // Demos initialize only after a user clicks a topic tab.
+                // No default selection.
+                activateMenu(null);
 
-                // Ensure the empty state is visible and no panels are shown.
-                clearActiveTab();
+                // Restore last-selected menu if saved.
+                let savedMenuId = null;
+                try {
+                    savedMenuId = localStorage.getItem(ACTIVE_MENU_STORAGE_KEY);
+                } catch {
+                    savedMenuId = null;
+                }
+                if (savedMenuId) activateMenu(savedMenuId);
             }
 
-            window.addEventListener("load", boot);
+            document.addEventListener("DOMContentLoaded", boot);
         </script>
     </body>
 </html>
