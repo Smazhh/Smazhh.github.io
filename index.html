@@ -1,11 +1,773 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Welcome to My Website</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AstraCore | Technology Website</title>
+
+    <!-- GLOBAL STYLES (USED IN ALL PARTS) -->
+    <style>
+        :root {
+            --primary: #0f172a;
+            --secondary: #2563eb;
+            --light: #f8fafc;
+            --dark: #020617;
+            --muted: #64748b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        section {
+            padding: 100px 70px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 34px;
+            background: var(--secondary);
+            color: white;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--secondary);
+            color: var(--secondary);
+        }
+
+        /* ================= NAVBAR ================= */
+
+        header {
+            background: var(--primary);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 70px;
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: bold;
+            color: white;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: #cbd5f5;
+            font-size: 15px;
+        }
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+        /* ================= HERO ================= */
+
+        .hero {
+            min-height: 90vh;
+            background: linear-gradient(120deg, #020617, #0f172a);
+            color: white;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-content {
+            max-width: 650px;
+        }
+
+        .hero h1 {
+            font-size: 54px;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #cbd5f5;
+            margin-bottom: 35px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 20px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 900px) {
+            section {
+                padding: 80px 40px;
+            }
+
+            .navbar {
+                padding: 20px 40px;
+            }
+
+            .hero h1 {
+                font-size: 42px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
 <body>
-  <h1>Hello from Samarth!</h1>
-  <p>My website is now active.</p>
+
+    <!-- ================= HEADER ================= -->
+    <header>
+        <div class="navbar">
+            <div class="logo">AstraCore</div>
+            <div class="nav-links">
+                <a href="#">Home</a>
+                <a href="#">Services</a>
+                <a href="#">About</a>
+                <a href="#">Pricing</a>
+                <a href="#">Contact</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= HERO SECTION ================= -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>
+                    Building Digital Products<br>
+                    That Actually Scale
+                </h1>
+                <p>
+                    AstraCore helps startups and enterprises design, build,
+                    and deploy fast, secure, and reliable web platforms.
+                </p>
+
+                <div class="hero-actions">
+                    <a href="#" class="btn">Get Started</a>
+                    <a href="#" class="btn btn-outline">View Work</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- ================= PART 2 START ================= -->
+
+<!-- SERVICES SECTION -->
+<section id="services">
+    <div class="container">
+        <div class="section-title">
+            <h2>Our Services</h2>
+            <p>Everything you need to build and scale digital products</p>
+        </div>
+
+        <div class="services-grid">
+            <div class="service-card">
+                <h3>Web Development</h3>
+                <p>
+                    High-performance websites and platforms using clean,
+                    scalable, and maintainable code.
+                </p>
+            </div>
+
+            <div class="service-card">
+                <h3>UI / UX Design</h3>
+                <p>
+                    User-focused design that improves engagement,
+                    retention, and conversion.
+                </p>
+            </div>
+
+            <div class="service-card">
+                <h3>Cloud & DevOps</h3>
+                <p>
+                    Secure infrastructure, CI/CD pipelines,
+                    and cloud-native deployment.
+                </p>
+            </div>
+
+            <div class="service-card">
+                <h3>Consulting</h3>
+                <p>
+                    Technical guidance to help you choose the right tools,
+                    architecture, and strategy.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ABOUT SECTION -->
+<section id="about" class="about-section">
+    <div class="container about-grid">
+        <div class="about-text">
+            <h2>About AstraCore</h2>
+            <p>
+                AstraCore is a technology-driven team focused on building
+                fast, reliable, and scalable digital systems for modern businesses.
+            </p>
+            <p>
+                We work with startups and enterprises to transform ideas
+                into real-world products that users love.
+            </p>
+            <a href="#" class="btn">Learn More</a>
+        </div>
+
+        <div class="about-image">
+            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f"
+                 alt="Team working">
+        </div>
+    </div>
+</section>
+
+<!-- FEATURES SECTION -->
+<section id="features">
+    <div class="container">
+        <div class="section-title">
+            <h2>Why Choose Us</h2>
+            <p>What makes AstraCore different</p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-item">
+                <h4>Scalable Architecture</h4>
+                <p>Systems designed to grow with your business.</p>
+            </div>
+
+            <div class="feature-item">
+                <h4>Clean Code</h4>
+                <p>Readable, maintainable, and well-documented solutions.</p>
+            </div>
+
+            <div class="feature-item">
+                <h4>Security First</h4>
+                <p>Best practices to protect your data and users.</p>
+            </div>
+
+            <div class="feature-item">
+                <h4>Fast Delivery</h4>
+                <p>Agile process to ship features quickly.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= PART 2 END ================= -->
+
+<style>
+/* ===== PART 2 STYLES ===== */
+
+.section-title {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.section-title h2 {
+    font-size: 34px;
+    margin-bottom: 10px;
+}
+
+.section-title p {
+    color: var(--muted);
+}
+
+/* SERVICES */
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 30px;
+}
+
+.service-card {
+    background: white;
+    padding: 35px;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+.service-card h3 {
+    margin-bottom: 15px;
+}
+
+/* ABOUT */
+.about-section {
+    background: #f1f5f9;
+}
+
+.about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
+    align-items: center;
+}
+
+.about-text h2 {
+    font-size: 34px;
+    margin-bottom: 20px;
+}
+
+.about-text p {
+    margin-bottom: 15px;
+    color: #475569;
+}
+
+/* FEATURES */
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 25px;
+}
+
+.feature-item {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    border-left: 4px solid var(--secondary);
+}
+
+.feature-item h4 {
+    margin-bottom: 10px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 800px) {
+    .about-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+
+<!-- ================= PART 2 END ================= -->
+<!-- ================= PART 3 START ================= -->
+
+<!-- TESTIMONIALS -->
+<section id="testimonials" style="background:#eef2f7;">
+    <div class="container">
+        <div class="section-title">
+            <h2>What Our Clients Say</h2>
+            <p>Trusted by teams worldwide</p>
+        </div>
+
+        <div class="testimonial-grid">
+            <div class="testimonial-card">
+                <p>
+                    “AstraCore delivered exactly what we needed.
+                    Clean code, great communication, solid results.”
+                </p>
+                <h4>Alex Morgan</h4>
+                <span>Startup Founder</span>
+            </div>
+
+            <div class="testimonial-card">
+                <p>
+                    “The performance and scalability are impressive.
+                    We saw immediate improvements.”
+                </p>
+                <h4>Priya Sharma</h4>
+                <span>Product Manager</span>
+            </div>
+
+            <div class="testimonial-card">
+                <p>
+                    “Highly professional team. Would definitely
+                    work with them again.”
+                </p>
+                <h4>Daniel Lee</h4>
+                <span>Tech Lead</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+    <div class="container">
+        <div class="section-title">
+            <h2>Pricing Plans</h2>
+            <p>Simple and transparent pricing</p>
+        </div>
+
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <h3>Starter</h3>
+                <p class="price">$19<span>/month</span></p>
+                <ul>
+                    <li>Basic Website</li>
+                    <li>Email Support</li>
+                    <li>Community Access</li>
+                </ul>
+                <a href="#" class="btn btn-outline">Choose Plan</a>
+            </div>
+
+            <div class="pricing-card featured">
+                <h3>Professional</h3>
+                <p class="price">$49<span>/month</span></p>
+                <ul>
+                    <li>Full Website</li>
+                    <li>Priority Support</li>
+                    <li>Performance Optimization</li>
+                </ul>
+                <a href="#" class="btn">Choose Plan</a>
+            </div>
+
+            <div class="pricing-card">
+                <h3>Enterprise</h3>
+                <p class="price">$99<span>/month</span></p>
+                <ul>
+                    <li>Custom Solutions</li>
+                    <li>Dedicated Support</li>
+                    <li>Cloud Deployment</li>
+                </ul>
+                <a href="#" class="btn btn-outline">Choose Plan</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" style="background:#f8fafc;">
+    <div class="container">
+        <div class="section-title">
+            <h2>Frequently Asked Questions</h2>
+            <p>Quick answers to common questions</p>
+        </div>
+
+        <div class="faq-list">
+            <div class="faq-item">
+                <h4>How long does a project take?</h4>
+                <p>
+                    Most projects take between 2 to 6 weeks,
+                    depending on complexity.
+                </p>
+            </div>
+
+            <div class="faq-item">
+                <h4>Do you provide support after delivery?</h4>
+                <p>
+                    Yes. We offer maintenance and support
+                    packages for all clients.
+                </p>
+            </div>
+
+            <div class="faq-item">
+                <h4>Can you scale existing systems?</h4>
+                <p>
+                    Absolutely. We specialize in optimizing
+                    and scaling live products.
+                </p>
+            </div>
+
+            <div class="faq-item">
+                <h4>Is pricing flexible?</h4>
+                <p>
+                    For enterprise and custom projects,
+                    pricing is fully flexible.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= PART 3 END ================= -->
+
+<style>
+/* ===== PART 3 STYLES ===== */
+
+/* TESTIMONIALS */
+.testimonial-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 30px;
+}
+
+.testimonial-card {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.testimonial-card p {
+    font-style: italic;
+    margin-bottom: 15px;
+}
+
+.testimonial-card span {
+    color: var(--muted);
+    font-size: 14px;
+}
+
+/* PRICING */
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 30px;
+}
+
+.pricing-card {
+    background: white;
+    padding: 35px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+.pricing-card.featured {
+    border: 3px solid var(--secondary);
+    transform: scale(1.05);
+}
+
+.pricing-card .price {
+    font-size: 36px;
+    margin: 20px 0;
+}
+
+.pricing-card span {
+    font-size: 14px;
+    color: var(--muted);
+}
+
+.pricing-card ul {
+    list-style: none;
+    margin-bottom: 25px;
+}
+
+.pricing-card ul li {
+    margin: 10px 0;
+}
+
+/* FAQ */
+.faq-list {
+    max-width: 800px;
+    margin: auto;
+}
+
+.faq-item {
+    background: white;
+    padding: 25px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.06);
+}
+
+.faq-item h4 {
+    margin-bottom: 10px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+    .pricing-card.featured {
+        transform: scale(1);
+    }
+}
+</style>
+
+<!-- ================= PART 3 END ================= -->
+<!-- ================= PART 4 FINAL START ================= -->
+
+<!-- CONTACT SECTION -->
+<section id="contact" style="background:#020617; color:white;">
+    <div class="container">
+        <div class="section-title">
+            <h2>Contact Us</h2>
+            <p style="color:#cbd5f5;">Let’s build something together</p>
+        </div>
+
+        <div class="contact-grid">
+            <div class="contact-info">
+                <h3>Get in Touch</h3>
+                <p>
+                    Have a project in mind or just want to talk?
+                    Drop us a message and we’ll get back to you.
+                </p>
+
+                <ul>
+                    <li>Email: hello@astracore.dev</li>
+                    <li>Phone: +91 98765 43210</li>
+                    <li>Location: Remote / Global</li>
+                </ul>
+            </div>
+
+            <form class="contact-form">
+                <input type="text" placeholder="Your Name" required>
+                <input type="email" placeholder="Your Email" required>
+                <textarea rows="5" placeholder="Your Message"></textarea>
+                <button type="submit" class="btn">Send Message</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="container footer-grid">
+        <div>
+            <h3>AstraCore</h3>
+            <p>
+                Building scalable digital products
+                with clean design and solid engineering.
+            </p>
+        </div>
+
+        <div>
+            <h4>Quick Links</h4>
+            <a href="#services">Services</a>
+            <a href="#about">About</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#contact">Contact</a>
+        </div>
+
+        <div>
+            <h4>Follow Us</h4>
+            <a href="#">LinkedIn</a>
+            <a href="#">Twitter</a>
+            <a href="#">GitHub</a>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        © 2025 AstraCore. All rights reserved.
+    </div>
+</footer>
+
+<!-- ================= STYLES ================= -->
+<style>
+/* CONTACT */
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+.contact-info h3 {
+    margin-bottom: 15px;
+}
+
+.contact-info p {
+    color: #cbd5f5;
+    margin-bottom: 20px;
+}
+
+.contact-info ul {
+    list-style: none;
+}
+
+.contact-info ul li {
+    margin-bottom: 10px;
+    color: #cbd5f5;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.contact-form input,
+.contact-form textarea {
+    padding: 12px;
+    border-radius: 6px;
+    border: none;
+    outline: none;
+}
+
+/* FOOTER */
+.footer {
+    background: #020617;
+    color: #cbd5f5;
+    padding: 60px 70px 20px;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 40px;
+}
+
+.footer h3, .footer h4 {
+    color: white;
+    margin-bottom: 15px;
+}
+
+.footer a {
+    display: block;
+    margin-bottom: 8px;
+    color: #cbd5f5;
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 14px;
+    color: #94a3b8;
+}
+
+/* RESPONSIVE */
+@media (max-width: 800px) {
+    .contact-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+
+<!-- ================= JAVASCRIPT ================= -->
+<script>
+/* Smooth scroll */
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href'))
+            ?.scrollIntoView({ behavior: 'smooth' });
+    });
+});
+</script>
+
+<!-- ================= PART 4 FINAL END ================= -->
 </body>
 </html>
