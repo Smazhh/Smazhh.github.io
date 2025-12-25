@@ -1,773 +1,2483 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AstraCore | Technology Website</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- GLOBAL STYLES (USED IN ALL PARTS) -->
-    <style>
-        :root {
-            --primary: #0f172a;
-            --secondary: #2563eb;
-            --light: #f8fafc;
-            --dark: #020617;
-            --muted: #64748b;
-        }
+<title>ORBITAL — Creative System</title>
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, Helvetica, sans-serif;
-        }
+<style>
 
-        body {
-            background: var(--light);
-            color: var(--dark);
-            line-height: 1.6;
-        }
+/* ======================================================
+   ORBITAL DESIGN SYSTEM
+   PART 1.1 — CORE + VISUAL LANGUAGE
+   ====================================================== */
 
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
+/* ---------- DESIGN TOKENS ---------- */
+:root {
 
-        img {
-            max-width: 100%;
-            display: block;
-        }
+  /* Deep Ink Scale */
+  --ink-950: #020617;
+  --ink-900: #030712;
+  --ink-800: #0f172a;
+  --ink-700: #1e293b;
+  --ink-600: #334155;
 
-        section {
-            padding: 100px 70px;
-        }
+  /* Accent Spectrum */
+  --cyan-500: #22d3ee;
+  --blue-500: #3b82f6;
+  --violet-500: #8b5cf6;
+  --pink-500: #ec4899;
+  --emerald-500: #10b981;
 
-        .container {
-            max-width: 1200px;
-            margin: auto;
-        }
+  /* Paper */
+  --paper-50: #fbfdff;
+  --paper-100: #f8fafc;
+  --paper-200: #eef2f7;
 
-        .btn {
-            display: inline-block;
-            padding: 14px 34px;
-            background: var(--secondary);
-            color: white;
-            border-radius: 6px;
-            font-size: 15px;
-        }
+  /* Typography */
+  --font-main: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
 
-        .btn-outline {
-            background: transparent;
-            border: 2px solid var(--secondary);
-            color: var(--secondary);
-        }
+  /* Spacing */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 16px;
+  --s-4: 24px;
+  --s-5: 40px;
+  --s-6: 64px;
+  --s-7: 96px;
+  --s-8: 140px;
 
-        /* ================= NAVBAR ================= */
+  /* Radius */
+  --r-sm: 6px;
+  --r-md: 14px;
+  --r-lg: 28px;
 
-        header {
-            background: var(--primary);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
+  /* Motion */
+  --ease-silk: cubic-bezier(.22,1,.36,1);
+  --ease-snap: cubic-bezier(.4,0,1,1);
+}
 
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 70px;
-        }
+/* ---------- RESET ---------- */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-        .logo {
-            font-size: 26px;
-            font-weight: bold;
-            color: white;
-            letter-spacing: 1px;
-        }
+html {
+  scroll-behavior: smooth;
+}
 
-        .nav-links {
-            display: flex;
-            gap: 30px;
-        }
+body {
+  font-family: var(--font-main);
+  background:
+    radial-gradient(1200px 600px at 10% -10%, #e0f2fe 0%, transparent 60%),
+    radial-gradient(800px 500px at 90% 10%, #ede9fe 0%, transparent 55%),
+    var(--paper-50);
+  color: var(--ink-900);
+  line-height: 1.75;
+  overflow-x: hidden;
+}
 
-        .nav-links a {
-            color: #cbd5f5;
-            font-size: 15px;
-        }
+/* ---------- TEXT SELECTION ---------- */
+::selection {
+  background: var(--pink-500);
+  color: white;
+}
 
-        .nav-links a:hover {
-            color: white;
-        }
+/* ---------- ELEMENT NORMALIZATION ---------- */
+img {
+  max-width: 100%;
+  display: block;
+}
 
-        /* ================= HERO ================= */
+a {
+  color: inherit;
+  text-decoration: none;
+}
 
-        .hero {
-            min-height: 90vh;
-            background: linear-gradient(120deg, #020617, #0f172a);
-            color: white;
-            display: flex;
-            align-items: center;
-        }
+ul {
+  list-style: none;
+}
 
-        .hero-content {
-            max-width: 650px;
-        }
+/* ---------- LAYOUT PRIMITIVES ---------- */
+.container {
+  max-width: 1300px;
+  margin-inline: auto;
+  padding-inline: var(--s-5);
+}
 
-        .hero h1 {
-            font-size: 54px;
-            line-height: 1.1;
-            margin-bottom: 20px;
-        }
+.section {
+  padding-block: var(--s-8);
+  position: relative;
+}
 
-        .hero p {
-            font-size: 18px;
-            color: #cbd5f5;
-            margin-bottom: 35px;
-        }
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-4);
+}
 
-        .hero-actions {
-            display: flex;
-            gap: 20px;
-        }
+.cluster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-4);
+  align-items: center;
+}
 
-        /* ================= RESPONSIVE ================= */
+.grid {
+  display: grid;
+  gap: var(--s-6);
+}
 
-        @media (max-width: 900px) {
-            section {
-                padding: 80px 40px;
-            }
+/* ---------- TYPOGRAPHY ---------- */
+.eyebrow {
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--violet-500);
+}
 
-            .navbar {
-                padding: 20px 40px;
-            }
+.h1 {
+  font-size: clamp(44px, 7vw, 84px);
+  line-height: 1.02;
+  letter-spacing: -1.5px;
+}
 
-            .hero h1 {
-                font-size: 42px;
-            }
-        }
+.h2 {
+  font-size: clamp(34px, 5vw, 60px);
+  line-height: 1.1;
+}
 
-        @media (max-width: 600px) {
-            .nav-links {
-                display: none;
-            }
+.lead {
+  font-size: 19px;
+  color: var(--ink-600);
+  max-width: 65ch;
+}
 
-            .hero h1 {
-                font-size: 36px;
-            }
+/* ---------- BUTTONS ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 32px;
+  border-radius: var(--r-md);
+  font-weight: 700;
+  transition: transform .35s var(--ease-silk),
+              box-shadow .35s var(--ease-silk),
+              background .35s var(--ease-silk);
+}
 
-            .hero-actions {
-                flex-direction: column;
-            }
-        }
-    </style>
+.btn-primary {
+  background:
+    linear-gradient(135deg,
+      var(--cyan-500),
+      var(--violet-500),
+      var(--pink-500)
+    );
+  color: white;
+  box-shadow: 0 25px 60px rgba(139,92,246,.35);
+}
+
+.btn-primary:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 40px 90px rgba(139,92,246,.45);
+}
+
+.btn-outline {
+  border: 2px solid rgba(15,23,42,.15);
+  background: white;
+}
+
+/* ---------- CARDS ---------- */
+.card {
+  background: white;
+  border-radius: var(--r-lg);
+  padding: var(--s-6);
+  box-shadow: 0 30px 80px rgba(2,6,23,.12);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(120deg,
+      transparent,
+      rgba(139,92,246,.08),
+      transparent
+    );
+  opacity: 0;
+  transition: opacity .4s;
+}
+
+.card:hover::after {
+  opacity: 1;
+}
+
+/* ---------- ATMOSPHERIC GLOWS ---------- */
+.glow {
+  position: absolute;
+  width: 700px;
+  height: 700px;
+  border-radius: 50%;
+  filter: blur(140px);
+  opacity: .35;
+  z-index: -1;
+}
+
+.glow.cyan {
+  background: radial-gradient(circle, var(--cyan-500), transparent 65%);
+}
+
+.glow.violet {
+  background: radial-gradient(circle, var(--violet-500), transparent 65%);
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 768px) {
+  .container {
+    padding-inline: var(--s-4);
+  }
+}
+
+</style>
 </head>
+
 <body>
 
-    <!-- ================= HEADER ================= -->
-    <header>
-        <div class="navbar">
-            <div class="logo">AstraCore</div>
-            <div class="nav-links">
-                <a href="#">Home</a>
-                <a href="#">Services</a>
-                <a href="#">About</a>
-                <a href="#">Pricing</a>
-                <a href="#">Contact</a>
-            </div>
-        </div>
-    </header>
+<section class="section">
+  <div class="container stack">
+    <span class="eyebrow">Genesis Layer</span>
+    <h1 class="h1">ORBITAL<br>Creative Infrastructure</h1>
+    <p class="lead">
+      This foundation is intentionally expressive.
+      Every spacing unit, gradient, and motion curve
+      exists to support large-scale creative expansion.
+    </p>
 
-    <!-- ================= HERO SECTION ================= -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1>
-                    Building Digital Products<br>
-                    That Actually Scale
-                </h1>
-                <p>
-                    AstraCore helps startups and enterprises design, build,
-                    and deploy fast, secure, and reliable web platforms.
-                </p>
-
-                <div class="hero-actions">
-                    <a href="#" class="btn">Get Started</a>
-                    <a href="#" class="btn btn-outline">View Work</a>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- ================= PART 2 START ================= -->
-
-<!-- SERVICES SECTION -->
-<section id="services">
-    <div class="container">
-        <div class="section-title">
-            <h2>Our Services</h2>
-            <p>Everything you need to build and scale digital products</p>
-        </div>
-
-        <div class="services-grid">
-            <div class="service-card">
-                <h3>Web Development</h3>
-                <p>
-                    High-performance websites and platforms using clean,
-                    scalable, and maintainable code.
-                </p>
-            </div>
-
-            <div class="service-card">
-                <h3>UI / UX Design</h3>
-                <p>
-                    User-focused design that improves engagement,
-                    retention, and conversion.
-                </p>
-            </div>
-
-            <div class="service-card">
-                <h3>Cloud & DevOps</h3>
-                <p>
-                    Secure infrastructure, CI/CD pipelines,
-                    and cloud-native deployment.
-                </p>
-            </div>
-
-            <div class="service-card">
-                <h3>Consulting</h3>
-                <p>
-                    Technical guidance to help you choose the right tools,
-                    architecture, and strategy.
-                </p>
-            </div>
-        </div>
+    <div class="cluster">
+      <a class="btn btn-primary">Enter System</a>
+      <a class="btn btn-outline">Documentation</a>
     </div>
-</section>
+  </div>
 
-<!-- ABOUT SECTION -->
-<section id="about" class="about-section">
-    <div class="container about-grid">
-        <div class="about-text">
-            <h2>About AstraCore</h2>
-            <p>
-                AstraCore is a technology-driven team focused on building
-                fast, reliable, and scalable digital systems for modern businesses.
-            </p>
-            <p>
-                We work with startups and enterprises to transform ideas
-                into real-world products that users love.
-            </p>
-            <a href="#" class="btn">Learn More</a>
-        </div>
-
-        <div class="about-image">
-            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f"
-                 alt="Team working">
-        </div>
-    </div>
-</section>
-
-<!-- FEATURES SECTION -->
-<section id="features">
-    <div class="container">
-        <div class="section-title">
-            <h2>Why Choose Us</h2>
-            <p>What makes AstraCore different</p>
-        </div>
-
-        <div class="features-grid">
-            <div class="feature-item">
-                <h4>Scalable Architecture</h4>
-                <p>Systems designed to grow with your business.</p>
-            </div>
-
-            <div class="feature-item">
-                <h4>Clean Code</h4>
-                <p>Readable, maintainable, and well-documented solutions.</p>
-            </div>
-
-            <div class="feature-item">
-                <h4>Security First</h4>
-                <p>Best practices to protect your data and users.</p>
-            </div>
-
-            <div class="feature-item">
-                <h4>Fast Delivery</h4>
-                <p>Agile process to ship features quickly.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ================= PART 2 END ================= -->
+  <div class="glow cyan" style="top:-200px; left:-200px;"></div>
+  <div class="glow violet" style="bottom:-300px; right:-200px;"></div>
+</section><!-- ======================================================
+     PART 1.2 — META STRUCTURE LAYER
+     ====================================================== -->
 
 <style>
-/* ===== PART 2 STYLES ===== */
 
-.section-title {
-    text-align: center;
-    margin-bottom: 60px;
+/* ---------- SECTION FRAMING ---------- */
+.frame {
+  position: relative;
+  padding: var(--s-6);
+  border-radius: var(--r-lg);
+  background:
+    linear-gradient(180deg,
+      rgba(255,255,255,.9),
+      rgba(255,255,255,.7)
+    );
+  box-shadow: 0 40px 100px rgba(2,6,23,.12);
 }
 
-.section-title h2 {
-    font-size: 34px;
-    margin-bottom: 10px;
+/* ---------- VISUAL DIVIDERS ---------- */
+.divider {
+  height: 1px;
+  background:
+    linear-gradient(
+      to right,
+      transparent,
+      rgba(15,23,42,.25),
+      transparent
+    );
+  margin-block: var(--s-7);
 }
 
-.section-title p {
-    color: var(--muted);
+/* ---------- FLOATING LABEL ---------- */
+.floating-label {
+  position: absolute;
+  top: -14px;
+  left: 32px;
+  background: white;
+  padding: 4px 12px;
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--violet-500);
+  border-radius: 999px;
+  box-shadow: 0 10px 25px rgba(2,6,23,.15);
 }
 
-/* SERVICES */
-.services-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 30px;
+/* ---------- TEXT EMPHASIS ---------- */
+.highlight {
+  background:
+    linear-gradient(120deg,
+      rgba(34,211,238,.35),
+      rgba(139,92,246,.35)
+    );
+  padding-inline: 6px;
+  border-radius: 6px;
 }
 
-.service-card {
-    background: white;
-    padding: 35px;
-    border-radius: 10px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+/* ---------- DEPTH HELPERS ---------- */
+.depth-soft {
+  box-shadow: 0 20px 60px rgba(2,6,23,.12);
 }
 
-.service-card h3 {
-    margin-bottom: 15px;
+.depth-hard {
+  box-shadow: 0 40px 120px rgba(2,6,23,.2);
 }
 
-/* ABOUT */
-.about-section {
-    background: #f1f5f9;
+/* ---------- MOTION HOOKS ---------- */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity .8s var(--ease-silk),
+              transform .8s var(--ease-silk);
 }
 
-.about-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 50px;
-    align-items: center;
+[data-reveal].visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-.about-text h2 {
-    font-size: 34px;
-    margin-bottom: 20px;
-}
-
-.about-text p {
-    margin-bottom: 15px;
-    color: #475569;
-}
-
-/* FEATURES */
-.features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 25px;
-}
-
-.feature-item {
-    background: white;
-    padding: 25px;
-    border-radius: 8px;
-    border-left: 4px solid var(--secondary);
-}
-
-.feature-item h4 {
-    margin-bottom: 10px;
-}
-
-/* RESPONSIVE */
-@media (max-width: 800px) {
-    .about-grid {
-        grid-template-columns: 1fr;
-    }
-}
 </style>
 
-<!-- ================= PART 2 END ================= -->
-<!-- ================= PART 3 START ================= -->
-
-<!-- TESTIMONIALS -->
-<section id="testimonials" style="background:#eef2f7;">
-    <div class="container">
-        <div class="section-title">
-            <h2>What Our Clients Say</h2>
-            <p>Trusted by teams worldwide</p>
-        </div>
-
-        <div class="testimonial-grid">
-            <div class="testimonial-card">
-                <p>
-                    “AstraCore delivered exactly what we needed.
-                    Clean code, great communication, solid results.”
-                </p>
-                <h4>Alex Morgan</h4>
-                <span>Startup Founder</span>
-            </div>
-
-            <div class="testimonial-card">
-                <p>
-                    “The performance and scalability are impressive.
-                    We saw immediate improvements.”
-                </p>
-                <h4>Priya Sharma</h4>
-                <span>Product Manager</span>
-            </div>
-
-            <div class="testimonial-card">
-                <p>
-                    “Highly professional team. Would definitely
-                    work with them again.”
-                </p>
-                <h4>Daniel Lee</h4>
-                <span>Tech Lead</span>
-            </div>
-        </div>
+<section class="section">
+  <div class="container">
+    <div class="frame">
+      <span class="floating-label">Meta Layer</span>
+      <h2 class="h2">
+        Structure before spectacle.<br>
+        <span class="highlight">Always.</span>
+      </h2>
+      <p class="lead">
+        This layer exists to support narrative layouts,
+        transitions, and visual tension in later parts.
+      </p>
     </div>
+  </div>
 </section>
-
-<!-- PRICING -->
-<section id="pricing">
-    <div class="container">
-        <div class="section-title">
-            <h2>Pricing Plans</h2>
-            <p>Simple and transparent pricing</p>
-        </div>
-
-        <div class="pricing-grid">
-            <div class="pricing-card">
-                <h3>Starter</h3>
-                <p class="price">$19<span>/month</span></p>
-                <ul>
-                    <li>Basic Website</li>
-                    <li>Email Support</li>
-                    <li>Community Access</li>
-                </ul>
-                <a href="#" class="btn btn-outline">Choose Plan</a>
-            </div>
-
-            <div class="pricing-card featured">
-                <h3>Professional</h3>
-                <p class="price">$49<span>/month</span></p>
-                <ul>
-                    <li>Full Website</li>
-                    <li>Priority Support</li>
-                    <li>Performance Optimization</li>
-                </ul>
-                <a href="#" class="btn">Choose Plan</a>
-            </div>
-
-            <div class="pricing-card">
-                <h3>Enterprise</h3>
-                <p class="price">$99<span>/month</span></p>
-                <ul>
-                    <li>Custom Solutions</li>
-                    <li>Dedicated Support</li>
-                    <li>Cloud Deployment</li>
-                </ul>
-                <a href="#" class="btn btn-outline">Choose Plan</a>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- FAQ -->
-<section id="faq" style="background:#f8fafc;">
-    <div class="container">
-        <div class="section-title">
-            <h2>Frequently Asked Questions</h2>
-            <p>Quick answers to common questions</p>
-        </div>
-
-        <div class="faq-list">
-            <div class="faq-item">
-                <h4>How long does a project take?</h4>
-                <p>
-                    Most projects take between 2 to 6 weeks,
-                    depending on complexity.
-                </p>
-            </div>
-
-            <div class="faq-item">
-                <h4>Do you provide support after delivery?</h4>
-                <p>
-                    Yes. We offer maintenance and support
-                    packages for all clients.
-                </p>
-            </div>
-
-            <div class="faq-item">
-                <h4>Can you scale existing systems?</h4>
-                <p>
-                    Absolutely. We specialize in optimizing
-                    and scaling live products.
-                </p>
-            </div>
-
-            <div class="faq-item">
-                <h4>Is pricing flexible?</h4>
-                <p>
-                    For enterprise and custom projects,
-                    pricing is fully flexible.
-                </p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- ================= PART 3 END ================= -->
+<!-- ======================================================
+     PART 2.1 — CINEMATIC NAVIGATION
+     ====================================================== -->
 
 <style>
-/* ===== PART 3 STYLES ===== */
 
-/* TESTIMONIALS */
-.testimonial-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 30px;
+/* ---------- HEADER SHELL ---------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  backdrop-filter: blur(14px);
+  background: rgba(248,250,252,.75);
+  border-bottom: 1px solid rgba(15,23,42,.08);
 }
 
-.testimonial-card {
-    background: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+/* ---------- NAVBAR ---------- */
+.nav {
+  max-width: 1400px;
+  margin: auto;
+  padding: 20px 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.testimonial-card p {
-    font-style: italic;
-    margin-bottom: 15px;
+/* ---------- BRAND ---------- */
+.brand {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
 }
 
-.testimonial-card span {
-    color: var(--muted);
-    font-size: 14px;
+.brand span:first-child {
+  font-weight: 800;
+  letter-spacing: -1px;
+  font-size: 22px;
 }
 
-/* PRICING */
-.pricing-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 30px;
+.brand span:last-child {
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--violet-500);
 }
 
-.pricing-card {
-    background: white;
-    padding: 35px;
-    border-radius: 12px;
-    text-align: center;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+/* ---------- NAV LINKS ---------- */
+.nav-links {
+  display: flex;
+  gap: 36px;
 }
 
-.pricing-card.featured {
-    border: 3px solid var(--secondary);
-    transform: scale(1.05);
+.nav-links a {
+  position: relative;
+  font-weight: 600;
+  color: var(--ink-700);
+  padding: 6px 0;
 }
 
-.pricing-card .price {
-    font-size: 36px;
-    margin: 20px 0;
+/* underline animation */
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    var(--cyan-500),
+    var(--violet-500)
+  );
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .35s var(--ease-silk);
 }
 
-.pricing-card span {
-    font-size: 14px;
-    color: var(--muted);
+.nav-links a:hover::after {
+  transform: scaleX(1);
 }
 
-.pricing-card ul {
-    list-style: none;
-    margin-bottom: 25px;
+/* ---------- NAV CTA ---------- */
+.nav-cta {
+  padding: 12px 22px;
+  border-radius: 999px;
+  font-weight: 700;
+  background: linear-gradient(
+    135deg,
+    var(--cyan-500),
+    var(--violet-500)
+  );
+  color: white;
+  box-shadow: 0 15px 40px rgba(139,92,246,.35);
 }
 
-.pricing-card ul li {
-    margin: 10px 0;
+.nav-cta:hover {
+  transform: translateY(-2px);
 }
 
-/* FAQ */
-.faq-list {
-    max-width: 800px;
-    margin: auto;
+</style>
+
+<header class="site-header">
+  <nav class="nav">
+    <div class="brand">
+      <span>ORBITAL</span>
+      <span>Creative System</span>
+    </div>
+
+    <div class="nav-links">
+      <a href="#">Vision</a>
+      <a href="#">Structure</a>
+      <a href="#">Process</a>
+      <a href="#">Studio</a>
+    </div>
+
+    <a href="#" class="nav-cta">Enter</a>
+  </nav>
+</header>
+<!-- ======================================================
+     PART 2.2 — EXPERIMENTAL HERO
+     ====================================================== -->
+
+<style>
+
+/* ---------- HERO WRAPPER ---------- */
+.hero-experimental {
+  position: relative;
+  padding-block: var(--s-8);
+  overflow: hidden;
 }
 
-.faq-item {
-    background: white;
-    padding: 25px;
-    margin-bottom: 15px;
-    border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.06);
+/* ---------- HERO GRID ---------- */
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.2fr .8fr;
+  align-items: center;
+  gap: var(--s-7);
 }
 
-.faq-item h4 {
-    margin-bottom: 10px;
+/* ---------- HERO TEXT ---------- */
+.hero-copy {
+  position: relative;
 }
 
-/* RESPONSIVE */
+.hero-copy .eyebrow {
+  margin-bottom: 16px;
+}
+
+.hero-copy h1 {
+  font-size: clamp(48px, 8vw, 96px);
+  line-height: 1;
+  letter-spacing: -2px;
+}
+
+.hero-copy p {
+  margin-top: 24px;
+  font-size: 20px;
+  color: var(--ink-600);
+}
+
+/* ---------- HERO VISUAL ---------- */
+.hero-visual {
+  position: relative;
+  height: 520px;
+}
+
+.hero-visual::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--r-lg);
+  background:
+    linear-gradient(135deg,
+      rgba(34,211,238,.25),
+      rgba(139,92,246,.35)
+    );
+  transform: rotate(-6deg);
+}
+
+.hero-visual::after {
+  content: "";
+  position: absolute;
+  inset: 20px;
+  border-radius: var(--r-lg);
+  background: white;
+  box-shadow: 0 40px 120px rgba(2,6,23,.2);
+}
+
+/* ---------- FLOATING TEXT ---------- */
+.hero-float {
+  position: absolute;
+  bottom: 40px;
+  left: 40px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 1px;
+  color: var(--ink-600);
+  z-index: 2;
+}
+
+/* ---------- RESPONSIVE ---------- */
 @media (max-width: 900px) {
-    .pricing-card.featured {
-        transform: scale(1);
-    }
+  .hero-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-visual {
+    height: 360px;
+  }
 }
+
 </style>
 
-<!-- ================= PART 3 END ================= -->
-<!-- ================= PART 4 FINAL START ================= -->
+<section class="hero-experimental section">
+  <div class="container hero-grid">
 
-<!-- CONTACT SECTION -->
-<section id="contact" style="background:#020617; color:white;">
-    <div class="container">
-        <div class="section-title">
-            <h2>Contact Us</h2>
-            <p style="color:#cbd5f5;">Let’s build something together</p>
-        </div>
+    <div class="hero-copy" data-reveal>
+      <span class="eyebrow">Narrative Layer</span>
+      <h1>
+        Design<br>
+        as <span class="highlight">Infrastructure</span>
+      </h1>
+      <p>
+        This is where structure meets emotion.
+        Where systems are invisible, but felt.
+      </p>
 
-        <div class="contact-grid">
-            <div class="contact-info">
-                <h3>Get in Touch</h3>
-                <p>
-                    Have a project in mind or just want to talk?
-                    Drop us a message and we’ll get back to you.
-                </p>
-
-                <ul>
-                    <li>Email: hello@astracore.dev</li>
-                    <li>Phone: +91 98765 43210</li>
-                    <li>Location: Remote / Global</li>
-                </ul>
-            </div>
-
-            <form class="contact-form">
-                <input type="text" placeholder="Your Name" required>
-                <input type="email" placeholder="Your Email" required>
-                <textarea rows="5" placeholder="Your Message"></textarea>
-                <button type="submit" class="btn">Send Message</button>
-            </form>
-        </div>
+      <div class="cluster" style="margin-top:32px;">
+        <a class="btn btn-primary">Explore System</a>
+        <a class="btn btn-outline">Philosophy</a>
+      </div>
     </div>
+
+    <div class="hero-visual depth-hard">
+      <div class="hero-float">ORBITAL / HERO MODULE</div>
+    </div>
+
+  </div>
 </section>
+<!-- ======================================================
+     PART 3.1 — EDITORIAL & NARRATIVE ENGINE
+     ====================================================== -->
 
-<!-- FOOTER -->
-<footer class="footer">
-    <div class="container footer-grid">
-        <div>
-            <h3>AstraCore</h3>
-            <p>
-                Building scalable digital products
-                with clean design and solid engineering.
-            </p>
-        </div>
-
-        <div>
-            <h4>Quick Links</h4>
-            <a href="#services">Services</a>
-            <a href="#about">About</a>
-            <a href="#pricing">Pricing</a>
-            <a href="#contact">Contact</a>
-        </div>
-
-        <div>
-            <h4>Follow Us</h4>
-            <a href="#">LinkedIn</a>
-            <a href="#">Twitter</a>
-            <a href="#">GitHub</a>
-        </div>
-    </div>
-
-    <div class="footer-bottom">
-        © 2025 AstraCore. All rights reserved.
-    </div>
-</footer>
-
-<!-- ================= STYLES ================= -->
 <style>
-/* CONTACT */
-.contact-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
+
+/* ---------- EDITORIAL WRAPPER ---------- */
+.editorial {
+  max-width: 1100px;
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr;
+  gap: var(--s-6);
 }
 
-.contact-info h3 {
-    margin-bottom: 15px;
+/* ---------- COLUMNS ---------- */
+.editorial-main {
+  grid-column: 2 / 3;
 }
 
-.contact-info p {
-    color: #cbd5f5;
-    margin-bottom: 20px;
+.editorial-aside {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--ink-600);
+  opacity: .8;
 }
 
-.contact-info ul {
-    list-style: none;
+/* ---------- PARAGRAPHS ---------- */
+.editorial p {
+  font-size: 18px;
+  margin-bottom: 28px;
+  line-height: 1.8;
 }
 
-.contact-info ul li {
-    margin-bottom: 10px;
-    color: #cbd5f5;
+/* ---------- LEAD PARAGRAPH ---------- */
+.editorial .lead-paragraph {
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--ink-800);
 }
 
-.contact-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+/* ---------- PULL QUOTE ---------- */
+.pull-quote {
+  font-size: clamp(28px, 4vw, 46px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -1px;
+  margin: 80px 0;
+  position: relative;
 }
 
-.contact-form input,
-.contact-form textarea {
-    padding: 12px;
-    border-radius: 6px;
-    border: none;
-    outline: none;
+.pull-quote::before {
+  content: "“";
+  position: absolute;
+  left: -40px;
+  top: -20px;
+  font-size: 120px;
+  color: var(--violet-500);
+  opacity: .2;
 }
 
-/* FOOTER */
-.footer {
-    background: #020617;
-    color: #cbd5f5;
-    padding: 60px 70px 20px;
+/* ---------- SECTION BREAK ---------- */
+.story-break {
+  margin: var(--s-8) 0;
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
-.footer-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 40px;
+.story-break span {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: var(--ink-600);
 }
 
-.footer h3, .footer h4 {
-    color: white;
-    margin-bottom: 15px;
+.story-break::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    rgba(15,23,42,.3),
+    transparent
+  );
 }
 
-.footer a {
-    display: block;
-    margin-bottom: 8px;
-    color: #cbd5f5;
+/* ---------- MARGIN NOTE ---------- */
+.margin-note {
+  position: sticky;
+  top: 120px;
+  border-left: 2px solid var(--violet-500);
+  padding-left: 16px;
+  font-size: 14px;
+  line-height: 1.6;
 }
 
-.footer-bottom {
-    text-align: center;
-    margin-top: 40px;
-    font-size: 14px;
-    color: #94a3b8;
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 900px) {
+  .editorial {
+    grid-template-columns: 1fr;
+  }
+
+  .editorial-main {
+    grid-column: auto;
+  }
+
+  .editorial-aside {
+    display: none;
+  }
 }
 
-/* RESPONSIVE */
-@media (max-width: 800px) {
-    .contact-grid {
-        grid-template-columns: 1fr;
-    }
-}
 </style>
 
-<!-- ================= JAVASCRIPT ================= -->
+<section class="section">
+  <div class="container">
+    <div class="editorial">
+
+      <aside class="editorial-aside">
+        <div class="margin-note">
+          STORY MODULE 01<br>
+          Narrative-first layout<br>
+          Long-form thinking
+        </div>
+      </aside>
+
+      <div class="editorial-main">
+        <span class="eyebrow">Editorial Layer</span>
+
+        <p class="lead-paragraph">
+          This system is designed for people who read.
+          Not skim. Not scroll blindly.
+          But engage.
+        </p>
+
+        <p>
+          Modern interfaces are often obsessed with speed.
+          But speed without intention leads to noise.
+          ORBITAL slows the reader down just enough to create meaning.
+        </p>
+
+        <div class="pull-quote">
+          Design is not decoration.<br>
+          It is direction.
+        </div>
+
+        <p>
+          Every section breathes.
+          Every block earns its space.
+          This editorial engine exists so later components
+          can sit inside real narrative context.
+        </p>
+
+        <div class="story-break">
+          <span>SCROLL CONTINUES</span>
+        </div>
+
+        <p>
+          From here on, nothing is accidental.
+          Layout becomes language.
+          Space becomes tone.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- ======================================================
+     PART 3.2 — ASYMMETRIC STORY GRIDS
+     ====================================================== -->
+
+<style>
+
+/* ---------- RHYTHM SECTION ---------- */
+.rhythm {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--s-6);
+}
+
+/* ---------- BLOCK VARIANTS ---------- */
+.rhythm-block {
+  background: white;
+  border-radius: var(--r-lg);
+  padding: var(--s-6);
+  box-shadow: 0 30px 80px rgba(2,6,23,.12);
+}
+
+/* ---------- POSITIONING ---------- */
+.span-5 { grid-column: span 5; }
+.span-6 { grid-column: span 6; }
+.span-7 { grid-column: span 7; }
+
+.offset-1 { grid-column-start: 2; }
+.offset-2 { grid-column-start: 3; }
+
+/* ---------- VISUAL ACCENT ---------- */
+.rhythm-accent {
+  background:
+    linear-gradient(135deg,
+      rgba(34,211,238,.25),
+      rgba(139,92,246,.35)
+    );
+  color: var(--ink-900);
+}
+
+/* ---------- META TEXT ---------- */
+.meta {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  color: var(--ink-600);
+  margin-bottom: 16px;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 900px) {
+  .rhythm {
+    grid-template-columns: 1fr;
+  }
+
+  .span-5,
+  .span-6,
+  .span-7,
+  .offset-1,
+  .offset-2 {
+    grid-column: auto;
+  }
+}
+
+</style>
+
+<section class="section">
+  <div class="container">
+    <div class="rhythm">
+
+      <div class="rhythm-block span-6">
+        <div class="meta">BLOCK A</div>
+        <h3 class="h3">Asymmetry creates tension</h3>
+        <p>
+          Perfect grids feel safe.
+          Broken grids feel alive.
+        </p>
+      </div>
+
+      <div class="rhythm-block rhythm-accent span-5 offset-1">
+        <div class="meta">BLOCK B</div>
+        <h3 class="h3">Visual rhythm matters</h3>
+        <p>
+          Contrast is not color.
+          Contrast is timing.
+        </p>
+      </div>
+
+      <div class="rhythm-block span-7 offset-2">
+        <div class="meta">BLOCK C</div>
+        <h3 class="h3">Design as pacing</h3>
+        <p>
+          These blocks exist so future components
+          can snap into narrative positions,
+          not just fill space.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- ======================================================
+     PART 4.1 — COMPONENT FACTORY: CARD ENGINE
+     ====================================================== -->
+
+<style>
+
+/* ---------- CARD BASE ---------- */
+.c-card {
+  position: relative;
+  background: white;
+  border-radius: var(--r-lg);
+  padding: var(--s-6);
+  box-shadow: 0 30px 90px rgba(2,6,23,.12);
+  transition:
+    transform .35s var(--ease-silk),
+    box-shadow .35s var(--ease-silk),
+    filter .35s var(--ease-silk);
+}
+
+/* ---------- CARD STATES ---------- */
+.c-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 50px 140px rgba(2,6,23,.2);
+}
+
+.c-card[data-state="disabled"] {
+  opacity: .5;
+  filter: grayscale(1);
+  pointer-events: none;
+}
+
+/* ---------- CARD INTENTS ---------- */
+.c-card[data-intent="primary"] {
+  border-left: 6px solid var(--violet-500);
+}
+
+.c-card[data-intent="info"] {
+  border-left: 6px solid var(--cyan-500);
+}
+
+.c-card[data-intent="success"] {
+  border-left: 6px solid var(--emerald-500);
+}
+
+/* ---------- CARD HEADER ---------- */
+.c-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--s-4);
+}
+
+.c-card__title {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -.5px;
+}
+
+.c-card__meta {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: var(--ink-600);
+}
+
+/* ---------- CARD BODY ---------- */
+.c-card__body {
+  font-size: 17px;
+  line-height: 1.75;
+  color: var(--ink-700);
+}
+
+/* ---------- CARD FOOTER ---------- */
+.c-card__footer {
+  margin-top: var(--s-5);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ---------- CARD BADGE ---------- */
+.c-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 1px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(15,23,42,.06);
+}
+
+/* ---------- CARD OVERLAY ---------- */
+.c-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(120deg,
+      transparent,
+      rgba(139,92,246,.12),
+      transparent
+    );
+  opacity: 0;
+  transition: opacity .4s;
+}
+
+.c-card:hover::after {
+  opacity: 1;
+}
+
+/* ---------- CARD GRID ---------- */
+.c-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--s-6);
+}
+
+</style>
+
+<section class="section">
+  <div class="container">
+    <span class="eyebrow">Component Factory</span>
+
+    <div class="c-card-grid">
+
+      <div class="c-card" data-intent="primary">
+        <div class="c-card__header">
+          <div class="c-card__title">Primary Card</div>
+          <div class="c-card__meta">v1.0</div>
+        </div>
+
+        <div class="c-card__body">
+          This card is not visual decoration.
+          It is a composable unit that can carry
+          narrative, data, or interaction.
+        </div>
+
+        <div class="c-card__footer">
+          <span class="c-badge">ACTIVE</span>
+          <a class="btn btn-outline">Action</a>
+        </div>
+      </div>
+
+      <div class="c-card" data-intent="info">
+        <div class="c-card__header">
+          <div class="c-card__title">Informational Card</div>
+          <div class="c-card__meta">v1.0</div>
+        </div>
+
+        <div class="c-card__body">
+          Intent-driven styling means this same
+          component can shift meaning without duplication.
+        </div>
+
+        <div class="c-card__footer">
+          <span class="c-badge">INFO</span>
+          <a class="btn btn-outline">Details</a>
+        </div>
+      </div>
+
+      <div class="c-card" data-intent="success">
+        <div class="c-card__header">
+          <div class="c-card__title">Success Card</div>
+          <div class="c-card__meta">v1.0</div>
+        </div>
+
+        <div class="c-card__body">
+          Components scale when intent,
+          state, and structure are separated.
+        </div>
+
+        <div class="c-card__footer">
+          <span class="c-badge">READY</span>
+          <a class="btn btn-outline">Launch</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- ======================================================
+     PART 4.2 — INTERACTION & STATE LAYERS
+     ====================================================== -->
+
+<style>
+
+/* ---------- INTERACTION RINGS ---------- */
+[data-focusable] {
+  position: relative;
+}
+
+[data-focusable]:focus-visible::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: inherit;
+  border: 2px solid var(--cyan-500);
+}
+
+/* ---------- HOVER LIFT ---------- */
+.hover-lift {
+  transition:
+    transform .35s var(--ease-silk),
+    box-shadow .35s var(--ease-silk);
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 25px 80px rgba(2,6,23,.2);
+}
+
+/* ---------- PRESSABLE ---------- */
+.pressable {
+  transition: transform .15s var(--ease-snap);
+}
+
+.pressable:active {
+  transform: scale(.97);
+}
+
+/* ---------- STATE FLAGS ---------- */
+[data-state="loading"] {
+  opacity: .7;
+  pointer-events: none;
+  position: relative;
+}
+
+[data-state="loading"]::after {
+  content: "LOADING";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 2px;
+  background: rgba(255,255,255,.7);
+}
+
+/* ---------- EMPHASIS ---------- */
+.emphasis {
+  position: relative;
+}
+
+.emphasis::before {
+  content: "";
+  position: absolute;
+  inset: -10px -14px;
+  background:
+    linear-gradient(120deg,
+      rgba(34,211,238,.25),
+      rgba(139,92,246,.25)
+    );
+  border-radius: 999px;
+  z-index: -1;
+}
+
+/* ---------- ACTION ROW ---------- */
+.action-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* ---------- DEBUG MODE (OPTIONAL) ---------- */
+[data-debug="true"] * {
+  outline: 1px dashed rgba(236,72,153,.35);
+}
+
+</style>
+
+<section class="section">
+  <div class="container">
+    <span class="eyebrow">Interaction Layer</span>
+
+    <div class="action-row">
+      <a class="btn btn-primary pressable" data-focusable>
+        Pressable Action
+      </a>
+
+      <a class="btn btn-outline hover-lift" data-focusable>
+        Hover Lift
+      </a>
+
+      <div class="c-card emphasis" data-intent="primary">
+        <div class="c-card__body">
+          This card is emphasized using
+          interaction primitives, not custom hacks.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ======================================================
+     PART 5.1 — DATA ENGINE: METRICS & KPIs
+     ====================================================== -->
+
+<style>
+
+/* ---------- DATA WRAPPER ---------- */
+.data-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--s-6);
+}
+
+/* ---------- KPI CARD ---------- */
+.kpi {
+  grid-column: span 3;
+  background: white;
+  border-radius: var(--r-lg);
+  padding: var(--s-5);
+  box-shadow: 0 30px 80px rgba(2,6,23,.12);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ---------- KPI ACCENT ---------- */
+.kpi::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(120deg,
+      transparent,
+      rgba(139,92,246,.12),
+      transparent
+    );
+  opacity: 0;
+}
+
+.kpi:hover::before {
+  opacity: 1;
+}
+
+/* ---------- KPI LABEL ---------- */
+.kpi-label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  color: var(--ink-600);
+  margin-bottom: 10px;
+}
+
+/* ---------- KPI VALUE ---------- */
+.kpi-value {
+  font-size: clamp(36px, 4vw, 56px);
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+/* ---------- KPI TREND ---------- */
+.kpi-trend {
+  margin-top: 10px;
+  font-size: 14px;
+  color: var(--emerald-500);
+}
+
+/* ---------- KPI NEGATIVE ---------- */
+.kpi-trend.negative {
+  color: #ef4444;
+}
+
+/* ---------- WIDE DATA BLOCK ---------- */
+.data-wide {
+  grid-column: span 6;
+  background: white;
+  border-radius: var(--r-lg);
+  padding: var(--s-6);
+  box-shadow: 0 40px 120px rgba(2,6,23,.15);
+}
+
+/* ---------- DATA LIST ---------- */
+.data-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.data-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+}
+
+.data-item span:last-child {
+  font-family: var(--font-mono);
+  color: var(--ink-600);
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 1000px) {
+  .kpi { grid-column: span 6; }
+  .data-wide { grid-column: span 12; }
+}
+
+@media (max-width: 600px) {
+  .kpi { grid-column: span 12; }
+}
+
+</style>
+
+<section class="section">
+  <div class="container">
+    <span class="eyebrow">Data Layer</span>
+
+    <div class="data-grid">
+
+      <div class="kpi">
+        <div class="kpi-label">ACTIVE USERS</div>
+        <div class="kpi-value">124,932</div>
+        <div class="kpi-trend">▲ 12.4%</div>
+      </div>
+
+      <div class="kpi">
+        <div class="kpi-label">SYSTEM LOAD</div>
+        <div class="kpi-value">67%</div>
+        <div class="kpi-trend negative">▼ 3.1%</div>
+      </div>
+
+      <div class="kpi">
+        <div class="kpi-label">LATENCY (ms)</div>
+        <div class="kpi-value">184</div>
+        <div class="kpi-trend">▲ 1.2%</div>
+      </div>
+
+      <div class="kpi">
+        <div class="kpi-label">UPTIME</div>
+        <div class="kpi-value">99.98%</div>
+        <div class="kpi-trend">▲ stable</div>
+      </div>
+
+      <div class="data-wide">
+        <h3 class="h3">System Signals</h3>
+        <div class="data-list">
+          <div class="data-item">
+            <span>API Throughput</span><span>8.4k req/s</span>
+          </div>
+          <div class="data-item">
+            <span>Cache Hit Rate</span><span>92%</span>
+          </div>
+          <div class="data-item">
+            <span>Error Ratio</span><span>0.02%</span>
+          </div>
+          <div class="data-item">
+            <span>Deployment State</span><span>Healthy</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+<!-- ======================================================
+     PART 5.2 — DATA ENGINE: TIMELINES & LOGS
+     ====================================================== -->
+
+<style>
+
+/* ---------- TIMELINE ---------- */
+.timeline {
+  position: relative;
+  margin-left: 20px;
+  padding-left: 40px;
+  border-left: 2px solid rgba(15,23,42,.15);
+}
+
+/* ---------- TIMELINE ITEM ---------- */
+.timeline-item {
+  position: relative;
+  padding: 24px 0;
+}
+
+.timeline-item::before {
+  content: "";
+  position: absolute;
+  left: -51px;
+  top: 30px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--violet-500);
+  box-shadow: 0 0 0 6px rgba(139,92,246,.2);
+}
+
+/* ---------- TIMELINE HEADER ---------- */
+.timeline-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.timeline-title {
+  font-weight: 700;
+}
+
+.timeline-time {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-600);
+}
+
+/* ---------- LOG BLOCK ---------- */
+.log-block {
+  background: var(--ink-900);
+  color: #e5e7eb;
+  border-radius: var(--r-lg);
+  padding: var(--s-6);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.6;
+  box-shadow: 0 30px 90px rgba(2,6,23,.35);
+  overflow-x: auto;
+}
+
+/* ---------- LOG LINE ---------- */
+.log-line {
+  display: flex;
+  gap: 12px;
+}
+
+.log-time {
+  color: #94a3b8;
+  min-width: 90px;
+}
+
+.log-msg.success { color: #34d399; }
+.log-msg.warn { color: #fbbf24; }
+.log-msg.error { color: #f87171; }
+
+</style>
+
+<section class="section">
+  <div class="container">
+    <span class="eyebrow">Operational History</span>
+
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <div class="timeline-header">
+          <div class="timeline-title">Deployment Completed</div>
+          <div class="timeline-time">10:42 UTC</div>
+        </div>
+        <p>Version 4.12 rolled out to production.</p>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-header">
+          <div class="timeline-title">Traffic Spike Detected</div>
+          <div class="timeline-time">09:18 UTC</div>
+        </div>
+        <p>Load balancers scaled automatically.</p>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-header">
+          <div class="timeline-title">Cache Rebuild</div>
+          <div class="timeline-time">08:55 UTC</div>
+        </div>
+        <p>Cold cache warmed successfully.</p>
+      </div>
+
+    </div>
+
+    <div style="margin-top:var(--s-7);">
+      <h3 class="h3">System Logs</h3>
+
+      <div class="log-block">
+        <div class="log-line">
+          <span class="log-time">10:42:11</span>
+          <span class="log-msg success">[OK] Deployment finished</span>
+        </div>
+        <div class="log-line">
+          <span class="log-time">09:18:04</span>
+          <span class="log-msg warn">[WARN] Traffic surge detected</span>
+        </div>
+        <div class="log-line">
+          <span class="log-time">08:55:19</span>
+          <span class="log-msg success">[OK] Cache rebuild complete</span>
+        </div>
+        <div class="log-line">
+          <span class="log-time">08:31:02</span>
+          <span class="log-msg error">[ERR] Node timeout recovered</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+<!-- ======================================================
+     PART 6.1 — MOTION ENGINE: SCROLL & REVEAL
+     ====================================================== -->
+
+<style>
+
+/* ---------- MOTION VARIABLES ---------- */
+:root {
+  --motion-fast: .25s;
+  --motion-base: .6s;
+  --motion-slow: 1s;
+}
+
+/* ---------- REDUCED MOTION ---------- */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ---------- REVEAL BASE ---------- */
+[data-motion] {
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity var(--motion-base) var(--ease-silk),
+    transform var(--motion-base) var(--ease-silk);
+  will-change: transform, opacity;
+}
+
+/* ---------- REVEAL ACTIVE ---------- */
+[data-motion].in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ---------- DIRECTION VARIANTS ---------- */
+[data-motion="left"] {
+  transform: translateX(-60px);
+}
+
+[data-motion="right"] {
+  transform: translateX(60px);
+}
+
+[data-motion="scale"] {
+  transform: scale(.92);
+}
+
+[data-motion="blur"] {
+  filter: blur(8px);
+}
+
+[data-motion="blur"].in-view {
+  filter: blur(0);
+}
+
+/* ---------- STAGGER ---------- */
+[data-stagger] > * {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+[data-stagger].in-view > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+[data-stagger].in-view > *:nth-child(1) { transition-delay: .05s; }
+[data-stagger].in-view > *:nth-child(2) { transition-delay: .15s; }
+[data-stagger].in-view > *:nth-child(3) { transition-delay: .25s; }
+[data-stagger].in-view > *:nth-child(4) { transition-delay: .35s; }
+[data-stagger].in-view > *:nth-child(5) { transition-delay: .45s; }
+
+/* ---------- SCROLL MARKERS ---------- */
+.scroll-marker {
+  position: absolute;
+  right: 40px;
+  top: 50%;
+  transform: rotate(90deg);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--ink-600);
+  opacity: .6;
+}
+
+</style>
+
 <script>
-/* Smooth scroll */
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        document.querySelector(this.getAttribute('href'))
-            ?.scrollIntoView({ behavior: 'smooth' });
+/* ---------- INTERSECTION OBSERVER ---------- */
+const motionObserver = new IntersectionObserver(
+  entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("in-view");
+      }
     });
+  },
+  { threshold: 0.15 }
+);
+
+document.querySelectorAll("[data-motion], [data-stagger]").forEach(el => {
+  motionObserver.observe(el);
 });
 </script>
 
-<!-- ================= PART 4 FINAL END ================= -->
+<section class="section">
+  <div class="container">
+    <span class="eyebrow" data-motion>Motion Layer</span>
+
+    <h2 class="h2" data-motion="left">
+      Motion is not decoration.<br>
+      It is feedback.
+    </h2>
+
+    <p class="lead" data-motion="right">
+      Every transition communicates state, intent, and hierarchy.
+      This engine standardizes how movement behaves across the system.
+    </p>
+  </div>
+
+  <div class="scroll-marker">SCROLL</div>
+</section>
+<!-- ======================================================
+     PART 6.2 — MOTION ENGINE: DEPTH & TIME
+     ====================================================== -->
+
+<style>
+
+/* ---------- FLOATING LAYERS ---------- */
+.float-slow {
+  animation: floatSlow 12s ease-in-out infinite;
+}
+
+.float-fast {
+  animation: floatFast 6s ease-in-out infinite;
+}
+
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-18px); }
+}
+
+@keyframes floatFast {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* ---------- PULSE ---------- */
+.pulse-soft {
+  animation: pulseSoft 4s ease-in-out infinite;
+}
+
+@keyframes pulseSoft {
+  0%, 100% { opacity: .7; }
+  50% { opacity: 1; }
+}
+
+/* ---------- PARALLAX (LIGHTWEIGHT) ---------- */
+[data-parallax] {
+  transform: translateY(0);
+  transition: transform .1s linear;
+  will-change: transform;
+}
+
+</style>
+
+<script>
+/* ---------- PARALLAX HANDLER ---------- */
+const parallaxEls = document.querySelectorAll("[data-parallax]");
+
+window.addEventListener("scroll", () => {
+  const scrollY = window.scrollY;
+
+  parallaxEls.forEach(el => {
+    const speed = el.dataset.parallax || 0.15;
+    el.style.transform = `translateY(${scrollY * speed}px)`;
+  });
+});
+</script>
+
+<section class="section">
+  <div class="container grid">
+
+    <div class="card float-slow" data-motion="scale">
+      <h3 class="h3">Slow Float</h3>
+      <p>
+        Long-duration motion creates calm.
+        It signals background presence, not urgency.
+      </p>
+    </div>
+
+    <div class="card float-fast" data-motion="scale">
+      <h3 class="h3">Fast Float</h3>
+      <p>
+        Faster cycles indicate interactivity
+        and invite attention.
+      </p>
+    </div>
+
+    <div class="card pulse-soft" data-motion="blur" data-parallax="0.08">
+      <h3 class="h3">Temporal Depth</h3>
+      <p>
+        Subtle parallax and opacity shifts
+        give layers a sense of distance.
+      </p>
+    </div>
+
+  </div>
+</section>
+<!-- ======================================================
+     PART 7.1 — UX ENGINE: FORM ARCHITECTURE
+     ====================================================== -->
+
+<style>
+
+/* ---------- FORM WRAPPER ---------- */
+.form-shell {
+  max-width: 720px;
+  margin-inline: auto;
+  background: white;
+  border-radius: var(--r-lg);
+  padding: var(--s-7);
+  box-shadow: 0 40px 120px rgba(2,6,23,.15);
+}
+
+/* ---------- FORM HEADER ---------- */
+.form-header {
+  margin-bottom: var(--s-6);
+}
+
+.form-header h3 {
+  font-size: 32px;
+  letter-spacing: -1px;
+}
+
+.form-header p {
+  color: var(--ink-600);
+  margin-top: 8px;
+}
+
+/* ---------- FIELD GROUP ---------- */
+.field-group {
+  display: grid;
+  gap: var(--s-5);
+}
+
+/* ---------- FIELD ---------- */
+.field {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ---------- LABEL ---------- */
+.field-label {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--ink-700);
+}
+
+/* ---------- INPUT ---------- */
+.field-input {
+  padding: 16px 18px;
+  border-radius: var(--r-md);
+  border: 2px solid rgba(15,23,42,.15);
+  font-size: 16px;
+  transition:
+    border-color .25s var(--ease-silk),
+    box-shadow .25s var(--ease-silk);
+}
+
+.field-input:focus {
+  outline: none;
+  border-color: var(--violet-500);
+  box-shadow: 0 0 0 4px rgba(139,92,246,.2);
+}
+
+/* ---------- HELP TEXT ---------- */
+.field-help {
+  font-size: 14px;
+  color: var(--ink-600);
+}
+
+/* ---------- FORM ROW ---------- */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s-4);
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 700px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .form-shell {
+    padding: var(--s-6);
+  }
+}
+
+</style>
+
+<section class="section">
+  <div class="container">
+    <div class="form-shell" data-motion data-stagger>
+
+      <div class="form-header">
+        <span class="eyebrow">Human Interface</span>
+        <h3>Tell us about yourself</h3>
+        <p>
+          This isn’t data collection.
+          It’s the start of a relationship.
+        </p>
+      </div>
+
+      <form class="field-group">
+
+        <div class="form-row">
+          <div class="field">
+            <label class="field-label">First Name</label>
+            <input class="field-input" type="text" placeholder="Jane">
+            <span class="field-help">What should we call you?</span>
+          </div>
+
+          <div class="field">
+            <label class="field-label">Last Name</label>
+            <input class="field-input" type="text" placeholder="Doe">
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field-label">Email Address</label>
+          <input class="field-input" type="email" placeholder="jane@domain.com">
+          <span class="field-help">
+            We’ll only use this to reply. No noise.
+          </span>
+        </div>
+
+        <div class="field">
+          <label class="field-label">Message</label>
+          <textarea class="field-input" rows="4"
+            placeholder="What are you trying to build?"></textarea>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</section>
+<!-- ======================================================
+     PART 7.2 — UX ENGINE: FEEDBACK & STATES
+     ====================================================== -->
+
+<style>
+
+/* ---------- FEEDBACK BLOCK ---------- */
+.feedback {
+  margin-top: var(--s-6);
+  padding: var(--s-5);
+  border-radius: var(--r-md);
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  box-shadow: 0 20px 60px rgba(2,6,23,.12);
+}
+
+/* ---------- FEEDBACK TYPES ---------- */
+.feedback.success {
+  background: linear-gradient(
+    135deg,
+    rgba(16,185,129,.15),
+    rgba(16,185,129,.05)
+  );
+  border-left: 6px solid var(--emerald-500);
+}
+
+.feedback.error {
+  background: linear-gradient(
+    135deg,
+    rgba(239,68,68,.15),
+    rgba(239,68,68,.05)
+  );
+  border-left: 6px solid #ef4444;
+}
+
+.feedback.info {
+  background: linear-gradient(
+    135deg,
+    rgba(59,130,246,.15),
+    rgba(59,130,246,.05)
+  );
+  border-left: 6px solid var(--blue-500);
+}
+
+/* ---------- FEEDBACK TEXT ---------- */
+.feedback h4 {
+  margin-bottom: 4px;
+}
+
+.feedback p {
+  color: var(--ink-700);
+}
+
+/* ---------- TRUST STRIP ---------- */
+.trust-strip {
+  margin-top: var(--s-7);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--s-4);
+  text-align: center;
+}
+
+.trust-item {
+  padding: var(--s-4);
+  border-radius: var(--r-md);
+  background: white;
+  box-shadow: 0 20px 50px rgba(2,6,23,.1);
+}
+
+.trust-item span {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  color: var(--ink-600);
+  margin-top: 8px;
+}
+
+/* ---------- SUBMIT ROW ---------- */
+.submit-row {
+  margin-top: var(--s-6);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+</style>
+
+<section class="section">
+  <div class="container">
+
+    <div class="feedback success" data-motion>
+      <div>
+        <h4>Everything looks good</h4>
+        <p>
+          Your message is ready to be sent.
+          Nothing missing. Nothing broken.
+        </p>
+      </div>
+    </div>
+
+    <div class="submit-row">
+      <span class="field-help">
+        You can review before sending.
+      </span>
+      <a class="btn btn-primary pressable">Send Message</a>
+    </div>
+
+    <div class="trust-strip" data-stagger>
+      <div class="trust-item">
+        🔒
+        <span>Encrypted Transport</span>
+      </div>
+      <div class="trust-item">
+        ⚡
+        <span>Fast Response</span>
+      </div>
+      <div class="trust-item">
+        🤝
+        <span>No Spam Policy</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+<!-- ======================================================
+     PART 8.1 — JS ARCHITECTURE: CORE ENGINE
+     ====================================================== -->
+
+<script>
+/* ======================================================
+   ORBITAL JS CORE v1
+   ====================================================== */
+
+(function () {
+  "use strict";
+
+  /* ---------- GLOBAL NAMESPACE ---------- */
+  const ORBITAL = {};
+  window.ORBITAL = ORBITAL;
+
+  /* ---------- CONFIG ---------- */
+  ORBITAL.config = {
+    debug: false
+  };
+
+  /* ---------- LOGGER ---------- */
+  ORBITAL.log = function (...args) {
+    if (ORBITAL.config.debug) {
+      console.log("[ORBITAL]", ...args);
+    }
+  };
+
+  /* ---------- EVENT BUS (PUB/SUB) ---------- */
+  ORBITAL.events = (function () {
+    const events = {};
+
+    function on(event, handler) {
+      (events[event] ||= []).push(handler);
+    }
+
+    function off(event, handler) {
+      if (!events[event]) return;
+      events[event] = events[event].filter(h => h !== handler);
+    }
+
+    function emit(event, payload) {
+      ORBITAL.log("Event:", event, payload);
+      (events[event] || []).forEach(handler => handler(payload));
+    }
+
+    return { on, off, emit };
+  })();
+
+  /* ---------- STATE STORE ---------- */
+  ORBITAL.state = (function () {
+    const state = {};
+    const listeners = {};
+
+    function get(key) {
+      return state[key];
+    }
+
+    function set(key, value) {
+      state[key] = value;
+      ORBITAL.log("State set:", key, value);
+      (listeners[key] || []).forEach(fn => fn(value));
+    }
+
+    function subscribe(key, fn) {
+      (listeners[key] ||= []).push(fn);
+    }
+
+    return { get, set, subscribe };
+  })();
+
+  /* ---------- DOM HELPERS ---------- */
+  ORBITAL.dom = {
+    qs: (sel, ctx = document) => ctx.querySelector(sel),
+    qsa: (sel, ctx = document) => [...ctx.querySelectorAll(sel)],
+    create(tag, cls) {
+      const el = document.createElement(tag);
+      if (cls) el.className = cls;
+      return el;
+    }
+  };
+
+  /* ---------- INIT ---------- */
+  ORBITAL.init = function () {
+    ORBITAL.log("System initialized");
+    ORBITAL.events.emit("app:init");
+  };
+
+  document.addEventListener("DOMContentLoaded", ORBITAL.init);
+})();
+</script>
+<!-- ======================================================
+     PART 8.2 — JS ARCHITECTURE: MODULES & BEHAVIOR
+     ====================================================== -->
+
+<script>
+/* ======================================================
+   MODULE: MOTION VISIBILITY (UPGRADE)
+   ====================================================== */
+
+(function () {
+  ORBITAL.events.on("app:init", () => {
+    const motionEls = ORBITAL.dom.qsa("[data-motion], [data-stagger]");
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in-view");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    motionEls.forEach(el => observer.observe(el));
+  });
+})();
+
+/* ======================================================
+   MODULE: FORM STATE TRACKING
+   ====================================================== */
+
+(function () {
+  ORBITAL.events.on("app:init", () => {
+    const inputs = ORBITAL.dom.qsa(".field-input");
+
+    inputs.forEach(input => {
+      input.addEventListener("input", () => {
+        ORBITAL.state.set("form:dirty", true);
+      });
+    });
+  });
+})();
+
+/* ======================================================
+   MODULE: BUTTON FEEDBACK
+   ====================================================== */
+
+(function () {
+  ORBITAL.events.on("app:init", () => {
+    const buttons = ORBITAL.dom.qsa(".btn");
+
+    buttons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        btn.classList.add("pressable");
+        ORBITAL.events.emit("ui:action", {
+          label: btn.textContent.trim()
+        });
+      });
+    });
+  });
+})();
+
+/* ======================================================
+   MODULE: DEBUG TOGGLE
+   ====================================================== */
+
+(function () {
+  ORBITAL.events.on("app:init", () => {
+    window.addEventListener("keydown", e => {
+      if (e.ctrlKey && e.key === "d") {
+        ORBITAL.config.debug = !ORBITAL.config.debug;
+        document.body.dataset.debug = ORBITAL.config.debug;
+        ORBITAL.log("Debug mode:", ORBITAL.config.debug);
+      }
+    });
+  });
+})();
+</script>
+<!-- ======================================================
+     PART 9.1 — CONTROLLED CHAOS: SPLIT & COLLISION
+     ====================================================== -->
+
+<style>
+
+/* ---------- SPLIT SCREEN ---------- */
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 80vh;
+}
+
+/* ---------- SPLIT PANELS ---------- */
+.split-panel {
+  position: relative;
+  padding: var(--s-7);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* ---------- LEFT PANEL ---------- */
+.split-left {
+  background: var(--ink-900);
+  color: var(--paper-100);
+}
+
+/* ---------- RIGHT PANEL ---------- */
+.split-right {
+  background: var(--paper-100);
+}
+
+/* ---------- COLLISION BLOCK ---------- */
+.collision {
+  position: absolute;
+  right: -80px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: white;
+  padding: var(--s-6);
+  border-radius: var(--r-lg);
+  box-shadow: 0 50px 160px rgba(2,6,23,.35);
+  max-width: 420px;
+  z-index: 2;
+}
+
+/* ---------- COLLISION META ---------- */
+.collision span {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: var(--violet-500);
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 900px) {
+  .split {
+    grid-template-columns: 1fr;
+  }
+
+  .collision {
+    position: static;
+    transform: none;
+    margin-top: var(--s-5);
+  }
+}
+
+</style>
+
+<section class="split section">
+  <div class="split-panel split-left">
+    <span class="eyebrow">Chaos Layer</span>
+    <h2 class="h2">
+      Perfect balance<br>
+      is boring.
+    </h2>
+    <p class="lead">
+      Systems should allow tension.
+      This layout breaks symmetry
+      without breaking logic.
+    </p>
+  </div>
+
+  <div class="split-panel split-right">
+    <div class="collision" data-motion="scale">
+      <span>COLLISION BLOCK</span>
+      <h3 class="h3">Intentional overlap</h3>
+      <p>
+        This element exists in two spaces at once.
+        Visually disruptive.
+        Structurally safe.
+      </p>
+    </div>
+  </div>
+</section>
+<!-- ======================================================
+     PART 9.2 — CONTROLLED CHAOS: DISORIENTATION
+     ====================================================== -->
+
+<style>
+
+/* ---------- DISRUPTED SECTION ---------- */
+.disrupt {
+  position: relative;
+  padding-block: var(--s-8);
+  background: linear-gradient(
+    180deg,
+    var(--paper-100),
+    var(--paper-200)
+  );
+  overflow: hidden;
+}
+
+/* ---------- TILTED PLANE ---------- */
+.tilt-plane {
+  position: absolute;
+  inset: -20%;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(139,92,246,.15),
+      rgba(34,211,238,.15)
+    );
+  transform: rotate(-6deg);
+  z-index: 0;
+}
+
+/* ---------- DISRUPTED CONTENT ---------- */
+.disrupt-content {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+  margin-inline: auto;
+}
+
+/* ---------- OFFSET TEXT ---------- */
+.offset-text {
+  position: relative;
+  left: -80px;
+}
+
+/* ---------- BREAK LINE ---------- */
+.breakline {
+  margin: var(--s-7) 0;
+  height: 2px;
+  background:
+    linear-gradient(
+      to right,
+      transparent,
+      var(--ink-700),
+      transparent
+    );
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 900px) {
+  .offset-text {
+    left: 0;
+  }
+}
+
+</style>
+
+<section class="disrupt">
+  <div class="tilt-plane"></div>
+
+  <div class="disrupt-content">
+    <span class="eyebrow">Narrative Break</span>
+
+    <h2 class="h2 offset-text" data-motion="left">
+      Discomfort<br>
+      creates attention
+    </h2>
+
+    <div class="breakline"></div>
+
+    <p class="lead" data-motion="right">
+      When layouts behave too predictably,
+      users stop seeing.
+      Controlled chaos resets perception
+      without sacrificing trust.
+    </p>
+  </div>
+</section>
+<!-- ======================================================
+     PART 10.1 — FINAL POLISH: THEMES & PERFORMANCE
+     ====================================================== -->
+
+<style>
+
+/* ---------- THEME TOKENS ---------- */
+:root {
+  --bg-main: var(--paper-50);
+  --bg-elevated: white;
+  --text-main: var(--ink-900);
+  --text-muted: var(--ink-600);
+}
+
+/* ---------- DARK MODE ---------- */
+[data-theme="dark"] {
+  --bg-main: var(--ink-950);
+  --bg-elevated: var(--ink-800);
+  --text-main: #e5e7eb;
+  --text-muted: #9ca3af;
+}
+
+/* ---------- APPLY THEME ---------- */
+body {
+  background: var(--bg-main);
+  color: var(--text-main);
+}
+
+/* elevate common surfaces */
+.card,
+.c-card,
+.form-shell,
+.kpi,
+.data-wide,
+.rhythm-block,
+.trust-item,
+.feedback {
+  background: var(--bg-elevated);
+}
+
+/* muted text */
+.lead,
+.field-help,
+.kpi-label,
+.meta {
+  color: var(--text-muted);
+}
+
+/* ---------- THEME TRANSITION ---------- */
+html {
+  transition: background .4s ease, color .4s ease;
+}
+
+/* ---------- PERFORMANCE GUARDS ---------- */
+img {
+  content-visibility: auto;
+}
+
+.section {
+  contain: layout paint;
+}
+
+</style>
+
+<script>
+/* ======================================================
+   THEME CONTROLLER
+   ====================================================== */
+
+(function () {
+  const STORAGE_KEY = "orbital-theme";
+  const root = document.documentElement;
+
+  function setTheme(theme) {
+    root.dataset.theme = theme;
+    localStorage.setItem(STORAGE_KEY, theme);
+  }
+
+  function toggleTheme() {
+    const current = root.dataset.theme || "light";
+    setTheme(current === "dark" ? "light" : "dark");
+  }
+
+  // restore theme
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved) setTheme(saved);
+
+  // expose toggle
+  ORBITAL.events.on("app:init", () => {
+    ORBITAL.events.on("theme:toggle", toggleTheme);
+  });
+})();
+</script>
+
+<section class="section">
+  <div class="container">
+    <span class="eyebrow">System Control</span>
+
+    <div class="action-row">
+      <a class="btn btn-outline pressable"
+         onclick="ORBITAL.events.emit('theme:toggle')">
+        Toggle Theme
+      </a>
+    </div>
+  </div>
+</section>
+<!-- ======================================================
+     PART 10.2 — FINAL POLISH: SYSTEM CLOSURE
+     ====================================================== -->
+
+<style>
+
+/* ---------- SYSTEM SUMMARY ---------- */
+.system-summary {
+  max-width: 900px;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.system-summary h2 {
+  font-size: clamp(36px, 6vw, 64px);
+  letter-spacing: -1.5px;
+}
+
+.system-summary p {
+  margin-top: 20px;
+  font-size: 18px;
+}
+
+/* ---------- FOOTER CORE ---------- */
+.system-footer {
+  margin-top: var(--s-8);
+  padding: var(--s-7) var(--s-5);
+  border-top: 1px solid rgba(15,23,42,.15);
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: var(--ink-600);
+}
+
+/* ---------- FINAL MARK ---------- */
+.final-mark {
+  margin-top: 40px;
+  font-size: 14px;
+  opacity: .7;
+}
+
+</style>
+
+<section class="section">
+  <div class="container system-summary" data-motion>
+
+    <span class="eyebrow">System Complete</span>
+
+    <h2>
+      This is not a website.<br>
+      It is a framework for ideas.
+    </h2>
+
+    <p class="lead">
+      Every layer you added compounds.
+      Every component can multiply.
+      This system can grow without collapsing.
+    </p>
+
+    <div class="final-mark">
+      ORBITAL — v1.0<br>
+      Designed to scale beyond imagination
+    </div>
+
+  </div>
+</section>
+
+<footer class="system-footer">
+  BUILT WITH INTENT · NO FRAMEWORKS · NO SHORTCUTS
+</footer>
 </body>
 </html>
