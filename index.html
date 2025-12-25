@@ -1,15 +1,1720 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>My First Page</title>
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Computing + Trig Mini-Lab</title>
+        <meta
+            name="description"
+            content="Interactive mini-labs: QR codes, Taylor series, GPS trilateration, and noise cancellation."
+        />
 
-    <h1>Hello World</h1>
-    <p>This is my first HTML page.</p>
+        <style>
+            :root {
+                color-scheme: light dark;
+                --bg: #0b1020;
+                --panel: #0f1836;
+                --panel2: #0c142c;
+                --text: #e8ecff;
+                --muted: #b8c0e6;
+                --line: rgba(255, 255, 255, 0.12);
+                --accent: #7aa2ff;
+                --good: #63d6a4;
+                --warn: #ffcc66;
+                --bad: #ff6b7a;
+                --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+                --radius: 14px;
+                --radius2: 10px;
+                --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+                    monospace;
+                --sans: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji",
+                    "Segoe UI Emoji";
+            }
 
-    <button>Click me</button>
+            @media (prefers-color-scheme: light) {
+                :root {
+                    --bg: #f6f7ff;
+                    --panel: #ffffff;
+                    --panel2: #fbfcff;
+                    --text: #0f172a;
+                    --muted: #4b5563;
+                    --line: rgba(15, 23, 42, 0.12);
+                    --accent: #2563eb;
+                    --shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+                }
+            }
 
-</body>
+            * {
+                box-sizing: border-box;
+            }
+
+            html,
+            body {
+                height: 100%;
+            }
+
+            body {
+                margin: 0;
+                font-family: var(--sans);
+                background: var(--bg);
+                color: var(--text);
+                line-height: 1.45;
+            }
+
+            a {
+                color: inherit;
+            }
+
+            .container {
+                max-width: 1100px;
+                margin: 0 auto;
+                padding: 28px 18px 60px;
+            }
+
+            header {
+                display: grid;
+                gap: 14px;
+                padding: 18px 18px 16px;
+                background: var(--panel);
+                border: 1px solid var(--line);
+                border-radius: var(--radius);
+                box-shadow: var(--shadow);
+            }
+
+            .title {
+                display: grid;
+                gap: 4px;
+            }
+
+            h1 {
+                font-size: clamp(24px, 2.2vw + 16px, 38px);
+                margin: 0;
+                letter-spacing: -0.02em;
+            }
+
+            .subtitle {
+                margin: 0;
+                color: var(--muted);
+            }
+
+            .tabs {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                align-items: center;
+            }
+
+            .tab {
+                appearance: none;
+                border: 1px solid var(--line);
+                background: rgba(255, 255, 255, 0.06);
+                color: var(--text);
+                padding: 10px 12px;
+                border-radius: 999px;
+                cursor: pointer;
+                font-weight: 650;
+                letter-spacing: 0.01em;
+                transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
+            }
+
+            .tab:hover {
+                transform: translateY(-1px);
+                background: rgba(255, 255, 255, 0.09);
+            }
+
+            .tab[aria-selected="true"] {
+                border-color: rgba(122, 162, 255, 0.6);
+                background: rgba(122, 162, 255, 0.18);
+            }
+
+            .grid {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 16px;
+                margin-top: 16px;
+            }
+
+            .panel {
+                border: 1px solid var(--line);
+                border-radius: var(--radius);
+                background: var(--panel);
+                box-shadow: var(--shadow);
+                overflow: hidden;
+            }
+
+            .topicPanel {
+                opacity: 0;
+                transform: translateY(8px);
+                transition: opacity 160ms ease, transform 160ms ease;
+                will-change: opacity, transform;
+            }
+
+            .topicPanel.isShown {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .panelHeader {
+                padding: 14px 16px;
+                border-bottom: 1px solid var(--line);
+                display: flex;
+                justify-content: space-between;
+                align-items: baseline;
+                gap: 12px;
+                background: var(--panel);
+            }
+
+            .panelHeader h2 {
+                margin: 0;
+                font-size: 18px;
+                letter-spacing: -0.01em;
+            }
+
+            .panelHeader .hint {
+                margin: 0;
+                color: var(--muted);
+                font-size: 13px;
+            }
+
+            .panelBody {
+                padding: 16px;
+                display: grid;
+                gap: 14px;
+            }
+
+            .twoCol {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            @media (min-width: 920px) {
+                .twoCol {
+                    grid-template-columns: 1.1fr 0.9fr;
+                    align-items: start;
+                }
+            }
+
+            .card {
+                border: 1px solid var(--line);
+                border-radius: var(--radius2);
+                background: var(--panel2);
+                padding: 12px;
+            }
+
+            canvas {
+                background: var(--panel2);
+            }
+
+            .card h3 {
+                margin: 0 0 10px;
+                font-size: 14px;
+                letter-spacing: 0.01em;
+            }
+
+            .controls {
+                display: grid;
+                gap: 10px;
+            }
+
+            .row {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            @media (min-width: 620px) {
+                .row {
+                    grid-template-columns: 1fr 1fr;
+                    gap: 10px;
+                }
+            }
+
+            label {
+                display: grid;
+                gap: 6px;
+                font-size: 13px;
+                color: var(--muted);
+            }
+
+            .sliderRow {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .sliderRow .sliderText {
+                flex: 0 0 auto;
+                color: var(--muted);
+                font-size: 13px;
+                white-space: nowrap;
+            }
+
+            .sliderRow input[type="range"] {
+                flex: 1 1 auto;
+                min-width: 0;
+            }
+
+            .sliderRow .sliderValue {
+                flex: 0 0 auto;
+                min-width: 52px;
+                text-align: right;
+            }
+
+            input[type="text"],
+            input[type="number"],
+            select {
+                width: 100%;
+                padding: 10px 10px;
+                border-radius: 10px;
+                border: 1px solid var(--line);
+                background: rgba(255, 255, 255, 0.07);
+                color: var(--text);
+                outline: none;
+            }
+
+            input[type="range"] {
+                width: 100%;
+            }
+
+            .btnRow {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                align-items: center;
+            }
+
+            .btn {
+                appearance: none;
+                border: 1px solid var(--line);
+                border-radius: 12px;
+                background: rgba(255, 255, 255, 0.08);
+                color: var(--text);
+                padding: 10px 12px;
+                cursor: pointer;
+                font-weight: 650;
+                transition: transform 120ms ease, background 120ms ease;
+            }
+
+            .btn:hover {
+                transform: translateY(-1px);
+                background: rgba(255, 255, 255, 0.12);
+            }
+
+            .btn.primary {
+                border-color: rgba(122, 162, 255, 0.6);
+                background: rgba(122, 162, 255, 0.18);
+            }
+
+            .btn.danger {
+                border-color: rgba(255, 107, 122, 0.6);
+                background: rgba(255, 107, 122, 0.18);
+            }
+
+            .kv {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: 8px;
+                font-size: 14px;
+            }
+
+            .kv .mono {
+                font-family: var(--mono);
+                font-size: 13px;
+                padding: 10px;
+                border-radius: 10px;
+                border: 1px solid var(--line);
+                background: rgba(0, 0, 0, 0.18);
+                overflow: auto;
+            }
+
+            @media (prefers-color-scheme: light) {
+                .kv .mono {
+                    background: rgba(15, 23, 42, 0.06);
+                }
+            }
+
+            canvas {
+                width: 100%;
+                height: auto;
+                border-radius: 12px;
+                border: 1px solid var(--line);
+                background: rgba(0, 0, 0, 0.16);
+            }
+
+            @media (prefers-color-scheme: light) {
+                canvas {
+                    background: rgba(15, 23, 42, 0.04);
+                }
+            }
+
+            .note {
+                color: var(--muted);
+                font-size: 13px;
+                margin: 0;
+            }
+
+            .badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                padding: 6px 10px;
+                border-radius: 999px;
+                border: 1px solid var(--line);
+                background: rgba(255, 255, 255, 0.06);
+                font-size: 12px;
+                color: var(--muted);
+            }
+
+            .dot {
+                width: 8px;
+                height: 8px;
+                border-radius: 99px;
+                background: var(--accent);
+            }
+
+            .dot.good {
+                background: var(--good);
+            }
+
+            .dot.warn {
+                background: var(--warn);
+            }
+
+            .dot.bad {
+                background: var(--bad);
+            }
+
+            .srOnly {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                padding: 0;
+                margin: -1px;
+                overflow: hidden;
+                clip: rect(0, 0, 0, 0);
+                white-space: nowrap;
+                border: 0;
+            }
+
+            footer {
+                margin-top: 18px;
+                color: var(--muted);
+                font-size: 13px;
+                text-align: center;
+            }
+
+            .hidden {
+                display: none !important;
+            }
+
+            .emptyHelper {
+                margin: 10px 0 0;
+                color: var(--muted);
+                font-size: 13px;
+            }
+
+            .qrBox {
+                display: grid;
+                place-items: center;
+                min-height: 256px;
+            }
+
+            .qrOut {
+                display: grid;
+                place-items: center;
+                padding: 12px;
+                border-radius: 14px;
+                border: 1px dashed var(--line);
+                background: rgba(255, 255, 255, 0.04);
+                min-height: 240px;
+                width: 100%;
+            }
+
+            .qrOut img,
+            .qrOut canvas {
+                width: 220px;
+                height: 220px;
+                image-rendering: pixelated;
+                border: none;
+            }
+
+            .small {
+                font-size: 12px;
+                color: var(--muted);
+            }
+
+            .mathExplain {
+                font-size: 13px;
+                color: var(--text);
+                display: grid;
+                gap: 10px;
+            }
+
+            .mathExplain .eq {
+                font-family: var(--mono);
+                font-size: 13px;
+                padding: 10px 12px;
+                border-radius: 12px;
+                border: 1px dashed var(--line);
+                background: rgba(255, 255, 255, 0.04);
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            .mathExplain ul {
+                margin: 0;
+                padding-left: 18px;
+                color: var(--muted);
+            }
+
+            .mathExplain li {
+                margin: 4px 0;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app" class="container">
+            <header>
+                <div class="title">
+                    <h1>Computers &amp; Trigonometry — Interactive Mini‑Labs</h1>
+                    <p class="subtitle">
+                        Choose a topic below and try the demo.
+                    </p>
+                </div>
+
+                <div class="tabs" role="tablist" aria-label="Topics">
+                    <button class="tab" role="tab" aria-selected="false" aria-controls="panel-qr" id="tab-qr">
+                        QR Codes
+                    </button>
+                    <button class="tab" role="tab" aria-selected="false" aria-controls="panel-taylor" id="tab-taylor">
+                        Taylor Series
+                    </button>
+                    <button class="tab" role="tab" aria-selected="false" aria-controls="panel-gps" id="tab-gps">
+                        GPS &amp; Trilateration
+                    </button>
+                    <button class="tab" role="tab" aria-selected="false" aria-controls="panel-anc" id="tab-anc">
+                        Noise Cancellation
+                    </button>
+                </div>
+
+                <p class="emptyHelper" id="emptyHelper">Select a topic above to open its interactive demo.</p>
+            </header>
+
+            <main class="grid">
+                <!-- QR Codes -->
+                <section class="panel topicPanel hidden" role="tabpanel" aria-labelledby="tab-qr" id="panel-qr">
+                    <div class="panelHeader">
+                        <h2>QR Codes (Reed–Solomon error correction)</h2>
+                    </div>
+                    <div class="panelBody">
+                        <div class="card">
+                            <h3>Initial QR</h3>
+                            <div class="qrBox">
+                                <div id="qrInitialOut" class="qrOut" aria-live="polite"></div>
+                            </div>
+                            <p class="small">Reference (undamaged) QR for comparison.</p>
+                        </div>
+
+                        <div class="twoCol">
+                            <div class="card">
+                                <h3>Setup</h3>
+                                <div class="controls">
+                                    <div class="badge" aria-label="Fixed settings">
+                                        <span class="dot good"></span>
+                                        QR settings fixed (ECC H, size fixed)
+                                    </div>
+                                    <label>
+                                        <div class="sliderRow">
+                                            <span class="sliderText">Damage (%)</span>
+                                            <input type="range" id="qrDamage" min="0" max="40" step="1" value="0" />
+                                            <span class="small sliderValue" id="qrDamageLabel">0%</span>
+                                        </div>
+                                    </label>
+                                    <div class="btnRow">
+                                        <button class="btn" id="qrApplyDamage" disabled>Apply damage</button>
+                                        <button class="btn" id="qrRecover" disabled>Recover</button>
+                                        <span class="badge" id="qrStatus"><span class="dot warn"></span>Waiting</span>
+                                    </div>
+                                    <p class="note">
+                                        This demo simulates physical damage (scratches/occlusion). “Recover” succeeds only when the damage is
+                                        within the chosen error-correction capacity.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <h3>Output</h3>
+                                <div class="qrBox">
+                                    <div id="qrOut" class="qrOut" aria-live="polite"></div>
+                                </div>
+                                <p class="small">
+                                    Tip: Higher ECC is more robust, but the pattern becomes denser.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Taylor Series -->
+                <section class="panel topicPanel hidden" role="tabpanel" aria-labelledby="tab-taylor" id="panel-taylor">
+                    <div class="panelHeader">
+                        <h2>Taylor Series (Maclaurin) approximation</h2>
+                    </div>
+                    <div class="panelBody twoCol">
+                        <div class="card">
+                            <h3>Controls</h3>
+                            <div class="controls">
+                                <div class="row">
+                                    <label>
+                                        <div class="sliderRow">
+                                            <span class="sliderText">Terms (N)</span>
+                                            <input type="range" id="tTerms" min="1" max="15" step="1" value="5" />
+                                            <span class="small sliderValue" id="tTermsLabel">5</span>
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="btnRow">
+                                    <button class="btn primary" id="tReset">Reset</button>
+                                    <span class="badge" id="tErrorBadge"><span class="dot warn"></span>error: —</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h3>Plot</h3>
+                            <canvas id="tCanvas" width="900" height="420" aria-label="Taylor series plot"></canvas>
+                            <div class="kv">
+                                <div class="mathExplain" id="tFormula"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- GPS -->
+                <section class="panel topicPanel hidden" role="tabpanel" aria-labelledby="tab-gps" id="panel-gps">
+                    <div class="panelHeader">
+                        <h2>GPS Trilateration (Ideal 2D Simulation)</h2>
+                    </div>
+                    <div class="panelBody twoCol">
+                        <div class="card">
+                            <h3>Controls</h3>
+                            <div class="controls">
+                                <div class="row">
+                                    <label>
+                                        <div class="sliderRow">
+                                            <span class="sliderText">Satellites</span>
+                                            <input type="range" id="gCount" min="3" max="6" step="1" value="4" />
+                                            <span class="small sliderValue" id="gCountLabel">4</span>
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="btnRow">
+                                    <button class="btn primary" id="gRandom">Randomize</button>
+                                    <button class="btn" id="gSolve">Re-estimate</button>
+                                </div>
+                                <div class="kv">
+                                    <div class="mono" id="gReadout"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h3>Map</h3>
+                            <canvas id="gCanvas" width="900" height="520" aria-label="GPS trilateration canvas"></canvas>
+                            <p class="small">Drag satellites and the receiver point anywhere inside the planet.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Noise cancellation -->
+                <section class="panel topicPanel hidden" role="tabpanel" aria-labelledby="tab-anc" id="panel-anc">
+                    <div class="panelHeader">
+                        <h2>Noise Cancellation (destructive interference)</h2>
+                    </div>
+                    <div class="panelBody twoCol">
+                        <div class="card">
+                            <h3>Controls</h3>
+                            <div class="controls">
+                                <div class="row">
+                                    <div class="badge" aria-label="Fixed frequency">
+                                        <span class="dot good"></span>
+                                        Frequency fixed at 4 Hz
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label>
+                                        <div class="sliderRow">
+                                            <span class="sliderText">Phase shift (degrees)</span>
+                                            <input type="range" id="nPhase" min="0" max="360" step="1" value="180" />
+                                            <span class="small sliderValue" id="nPhaseLabel">180°</span>
+                                        </div>
+                                    </label>
+                                </div>
+                                <div class="btnRow">
+                                    <button class="btn primary" id="nIdeal">Ideal cancel</button>
+                                    <button class="btn" id="nRandom">Randomize</button>
+                                </div>
+                                <p class="note">Perfect cancellation happens when amplitude matches and the phase is 180° inverted.</p>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <h3>Waves</h3>
+                            <canvas id="nCanvas" width="900" height="360" aria-label="Original and anti-noise waves"></canvas>
+                            <p class="small">Top: Red = original · Blue = anti-noise</p>
+                            <canvas id="nCanvasResult" width="900" height="260" aria-label="Resultant wave"></canvas>
+                            <p class="small">Bottom: Green = resultant (what you hear)</p>
+                        </div>
+                    </div>
+                </section>
+            </main>
+
+            <footer>
+                Built for GitHub Pages. Runs fully client‑side.
+            </footer>
+        </div>
+
+        <!-- QR generator library (exposes module grid so we can simulate damage) -->
+        <script defer src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+
+        <script>
+            "use strict";
+
+            /**
+             * Small helpers
+             */
+            const $ = (sel) => document.querySelector(sel);
+            const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+            const lerp = (a, b, t) => a + (b - a) * t;
+            const fmt = (n, digits = 3) => Number.isFinite(n) ? n.toFixed(digits) : "—";
+            const degToRad = (deg) => (deg * Math.PI) / 180;
+
+            /**
+             * Tabs
+             */
+            const tabs = Array.from(document.querySelectorAll(".tab"));
+            const panels = ["#panel-qr", "#panel-taylor", "#panel-gps", "#panel-anc"].map((id) => $(id));
+            const emptyHelper = $("#emptyHelper");
+
+            function setEmptyHelperVisible(show) {
+                if (!emptyHelper) return;
+                emptyHelper.classList.toggle("hidden", !show);
+            }
+
+            function clearActiveTab() {
+                for (const t of tabs) {
+                    t.setAttribute("aria-selected", "false");
+                    t.tabIndex = 0;
+                }
+                for (const p of panels) {
+                    p.classList.remove("isShown");
+                    p.classList.add("hidden");
+                }
+                setEmptyHelperVisible(true);
+            }
+
+            function setActiveTab(tabId) {
+                const targetTab = tabs.find((t) => t.id === tabId);
+                if (!targetTab) return;
+
+                // If you click the currently-selected tab, toggle back to the empty state.
+                if (targetTab.getAttribute("aria-selected") === "true") {
+                    clearActiveTab();
+                    return;
+                }
+
+                for (const t of tabs) {
+                    const selected = t === targetTab;
+                    t.setAttribute("aria-selected", selected ? "true" : "false");
+                    t.tabIndex = selected ? 0 : -1;
+                }
+
+                const targetPanelId = targetTab.getAttribute("aria-controls");
+                let shownPanel = null;
+                for (const p of panels) {
+                    const show = p.id === targetPanelId;
+                    if (show) {
+                        p.classList.remove("hidden");
+                        p.classList.remove("isShown");
+                        shownPanel = p;
+                    } else {
+                        p.classList.remove("isShown");
+                        p.classList.add("hidden");
+                    }
+                }
+
+                if (shownPanel) {
+                    requestAnimationFrame(() => {
+                        shownPanel.classList.add("isShown");
+                    });
+                }
+
+                setEmptyHelperVisible(false);
+
+                // Trigger renders for canvases when shown
+                if (targetPanelId === "panel-qr") ensureQrInitialized();
+                if (targetPanelId === "panel-taylor") drawTaylor();
+                if (targetPanelId === "panel-gps") ensureGpsInitialized();
+                if (targetPanelId === "panel-anc") ensureNoiseInitialized();
+            }
+
+            for (const t of tabs) {
+                t.addEventListener("click", () => setActiveTab(t.id));
+                t.addEventListener("keydown", (e) => {
+                    if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+                    e.preventDefault();
+                    const dir = e.key === "ArrowRight" ? 1 : -1;
+                    const idx = tabs.indexOf(t);
+                    const next = tabs[(idx + dir + tabs.length) % tabs.length];
+                    next.focus();
+                    setActiveTab(next.id);
+                });
+            }
+
+            /**
+             * QR generator (fixed URL + damage/recover simulation)
+             */
+            const QR_CONTENT_FIXED = "samaarth.me";
+            const QR_ECC_FIXED = "H";
+            const QR_ECC_THRESHOLD_PERCENT = 30;
+            const QR_SIZE_FIXED = 256;
+            const qrInitialOut = $("#qrInitialOut");
+            const qrOut = $("#qrOut");
+            const qrDamage = $("#qrDamage");
+            const qrDamageLabel = $("#qrDamageLabel");
+            const qrApplyDamage = $("#qrApplyDamage");
+            const qrRecover = $("#qrRecover");
+            const qrStatus = $("#qrStatus");
+
+            let qrCleanCanvas = null;
+            let qrDamagedCanvas = null;
+            let qrLastDamagePercent = 0;
+            let qrInitialized = false;
+
+            function ensureQrInitialized() {
+                if (qrInitialized) return;
+                qrInitialized = true;
+
+                syncQrDamageLabel();
+                setQrBadge("warn", "Loading QR…");
+
+                // Generate default QR when library is ready
+                const tryAutoQR = () => {
+                    if (window.qrcode) {
+                        makeQr();
+                        return;
+                    }
+                    setTimeout(tryAutoQR, 80);
+                };
+                tryAutoQR();
+            }
+
+            function setQrBadge(kind, text) {
+                const dot = qrStatus.querySelector(".dot");
+                dot.classList.remove("good", "warn", "bad");
+                dot.classList.add(kind);
+                qrStatus.childNodes[1].nodeValue = " " + text;
+            }
+
+            function clearQrOut() {
+                qrOut.replaceChildren();
+                qrApplyDamage.disabled = true;
+                qrRecover.disabled = true;
+            }
+
+            function clearQrInitialOut() {
+                qrInitialOut?.replaceChildren();
+            }
+
+            function cloneCanvas(sourceCanvas) {
+                const cloned = document.createElement("canvas");
+                cloned.width = sourceCanvas.width;
+                cloned.height = sourceCanvas.height;
+                const ctx = cloned.getContext("2d");
+                ctx.drawImage(sourceCanvas, 0, 0);
+                return cloned;
+            }
+
+            function buildQrCanvas({ text, size, ecc }) {
+                // qrcode-generator global function: qrcode(typeNumber, errorCorrectionLevel)
+                // Use typeNumber=0 for automatic.
+                const qr = window.qrcode(0, (ecc || "M").toUpperCase());
+                qr.addData(text);
+                qr.make();
+
+                const count = qr.getModuleCount();
+                const quiet = 4; // modules
+                const total = count + quiet * 2;
+                const scale = Math.max(1, Math.floor(size / total));
+                const outSize = total * scale;
+
+                const canvas = document.createElement("canvas");
+                canvas.width = outSize;
+                canvas.height = outSize;
+                const ctx = canvas.getContext("2d");
+
+                ctx.fillStyle = "#ffffff";
+                ctx.fillRect(0, 0, outSize, outSize);
+                ctx.fillStyle = "#000000";
+                const darkModules = [];
+                for (let r = 0; r < count; r++) {
+                    for (let c = 0; c < count; c++) {
+                        if (qr.isDark(r, c)) {
+                            darkModules.push({ r, c });
+                            const x = (c + quiet) * scale;
+                            const y = (r + quiet) * scale;
+                            ctx.fillRect(x, y, scale, scale);
+                        }
+                    }
+                }
+                return { canvas, moduleCount: count, quiet, scale, totalModules: total, darkModules };
+            }
+
+            function renderQrCanvas(canvas) {
+                clearQrOut();
+                qrOut.appendChild(canvas);
+                qrApplyDamage.disabled = false;
+                qrRecover.disabled = false;
+            }
+
+            function renderQrInitialCanvas(canvas) {
+                if (!qrInitialOut) return;
+                qrInitialOut.replaceChildren();
+                qrInitialOut.appendChild(cloneCanvas(canvas));
+            }
+
+            function damageQrModulesEven(cleanInfo, percent) {
+                const p = clamp(Number(percent || 0), 0, 100);
+                const { canvas: cleanCanvas, darkModules, quiet, scale, moduleCount } = cleanInfo;
+
+                const damaged = document.createElement("canvas");
+                damaged.width = cleanCanvas.width;
+                damaged.height = cleanCanvas.height;
+                const ctx = damaged.getContext("2d");
+                ctx.drawImage(cleanCanvas, 0, 0);
+
+                if (p <= 0) return damaged;
+                if (!darkModules || darkModules.length === 0) return damaged;
+
+                // Target is based on number of black (dark) modules.
+                const target = Math.floor((darkModules.length * p) / 100);
+                if (target <= 0) return damaged;
+
+                // Evenly distributed selection over the list of dark modules.
+                const stride = Math.max(1, Math.floor(darkModules.length / target));
+                let idx = Math.floor(Math.random() * stride);
+                const maxJitter = Math.min(17, stride);
+
+                ctx.fillStyle = "#ffffff";
+
+                // Avoid duplicates with a small set when target is large.
+                const used = new Set();
+                const maxSteps = Math.min(darkModules.length, target * 4);
+                let painted = 0;
+
+                for (let step = 0; step < maxSteps && painted < target; step++) {
+                    const jitter = Math.floor((Math.random() - 0.5) * maxJitter);
+                    const pick = (idx + jitter + darkModules.length) % darkModules.length;
+                    const key = pick;
+                    if (!used.has(key)) {
+                        used.add(key);
+                        const { r, c } = darkModules[pick];
+                        // One QR "bit" = one module square.
+                        const x = (c + quiet) * scale;
+                        const y = (r + quiet) * scale;
+                        ctx.fillRect(x, y, scale, scale);
+                        painted++;
+                    }
+                    idx = (idx + stride) % darkModules.length;
+                }
+
+                // If we still didn't reach target (because of duplicates), fill randomly.
+                while (painted < target && used.size < darkModules.length) {
+                    const pick = Math.floor(Math.random() * darkModules.length);
+                    if (used.has(pick)) continue;
+                    used.add(pick);
+                    const { r, c } = darkModules[pick];
+                    const x = (c + quiet) * scale;
+                    const y = (r + quiet) * scale;
+                    ctx.fillRect(x, y, scale, scale);
+                    painted++;
+                }
+
+                return damaged;
+            }
+
+            function makeQr() {
+                if (!window.qrcode) {
+                    setQrBadge("bad", "QR library failed to load");
+                    clearQrOut();
+                    clearQrInitialOut();
+                    return;
+                }
+
+                const size = QR_SIZE_FIXED;
+                const ecc = QR_ECC_FIXED;
+                const threshold = QR_ECC_THRESHOLD_PERCENT;
+                const dmg = clamp(Number(qrDamage.value || 0), 0, 40);
+                qrLastDamagePercent = dmg;
+
+                const text = QR_CONTENT_FIXED;
+
+                setQrBadge("warn", "Generating…");
+                try {
+                    const info = buildQrCanvas({ text, size, ecc });
+                    qrCleanCanvas = info;
+                    qrDamagedCanvas = null;
+                    renderQrInitialCanvas(info.canvas);
+                    renderQrCanvas(info.canvas);
+                    setQrBadge("good", `Ready (ECC fixed: ${ecc}, recovers ~${threshold}%)`);
+                } catch {
+                    setQrBadge("bad", "Failed to generate");
+                    clearQrOut();
+                    clearQrInitialOut();
+                }
+            }
+            qrApplyDamage.addEventListener("click", () => {
+                if (!qrCleanCanvas) return;
+                const ecc = QR_ECC_FIXED;
+                const threshold = QR_ECC_THRESHOLD_PERCENT;
+                const dmg = clamp(Number(qrDamage.value || 0), 0, 40);
+                qrLastDamagePercent = dmg;
+                if (dmg <= 0) {
+                    qrDamagedCanvas = null;
+                    renderQrCanvas(qrCleanCanvas.canvas);
+                    setQrBadge("good", `Undamaged (ECC fixed: ${ecc}, recovers ~${threshold}%)`);
+                    return;
+                }
+                qrDamagedCanvas = damageQrModulesEven(qrCleanCanvas, dmg);
+                renderQrCanvas(qrDamagedCanvas);
+                setQrBadge("warn", `Damaged ${dmg}% (ECC fixed: ${ecc}, limit ~${threshold}%)`);
+            });
+            qrRecover.addEventListener("click", () => {
+                if (!qrCleanCanvas) return;
+                const ecc = QR_ECC_FIXED;
+                const threshold = QR_ECC_THRESHOLD_PERCENT;
+                const dmg = clamp(Number(qrDamage.value || 0), 0, 40);
+                qrLastDamagePercent = dmg;
+
+                if (dmg <= threshold) {
+                    renderQrCanvas(qrCleanCanvas.canvas);
+                    setQrBadge("good", `Recovered (damage ${dmg}% ≤ ${threshold}% for ECC fixed ${ecc})`);
+                } else {
+                    // Keep damaged view (or apply if not already)
+                    if (!qrDamagedCanvas) {
+                        qrDamagedCanvas = damageQrModulesEven(qrCleanCanvas, dmg);
+                        renderQrCanvas(qrDamagedCanvas);
+                    }
+                    setQrBadge("bad", `Recovery failed (damage ${dmg}% > ${threshold}% for ECC fixed ${ecc})`);
+                }
+            });
+
+            function syncQrDamageLabel() {
+                const dmg = clamp(Number(qrDamage.value || 0), 0, 40);
+                qrDamageLabel.textContent = `${dmg}%`;
+            }
+            qrDamage.addEventListener("input", () => {
+                syncQrDamageLabel();
+            });
+
+            /**
+             * Taylor series (sin)
+             */
+            const tTerms = $("#tTerms");
+            const tTermsLabel = $("#tTermsLabel");
+            const tCanvas = $("#tCanvas");
+            const tReset = $("#tReset");
+            const tErrorBadge = $("#tErrorBadge");
+            const tFormula = $("#tFormula");
+
+            const T_RANGE_FIXED = 9.5;
+
+            function sinMaclaurin(x, nTerms) {
+                // sum_{k=0}^{n-1} (-1)^k x^(2k+1)/(2k+1)!
+                let sum = 0;
+                let power = x;
+                let fact = 1;
+                // For k=0: x^1/1!
+                for (let k = 0; k < nTerms; k++) {
+                    const m = 2 * k + 1;
+                    if (k === 0) {
+                        power = x;
+                        fact = 1;
+                    } else {
+                        // multiply by x^2 and by (m-1)*m for factorial step
+                        power *= x * x;
+                        fact *= (m - 1) * m;
+                    }
+                    const term = power / fact;
+                    sum += (k % 2 === 0 ? 1 : -1) * term;
+                }
+                return sum;
+            }
+
+            function drawAxes(ctx, w, h, xmin, xmax, ymin, ymax) {
+                const toX = (x) => ((x - xmin) / (xmax - xmin)) * w;
+                const toY = (y) => h - ((y - ymin) / (ymax - ymin)) * h;
+
+                ctx.save();
+                ctx.strokeStyle = "rgba(255,255,255,0.22)";
+                ctx.lineWidth = 1;
+
+                // grid
+                ctx.beginPath();
+                const gx = 8;
+                const gy = 6;
+                for (let i = 0; i <= gx; i++) {
+                    const x = (i / gx) * w;
+                    ctx.moveTo(x, 0);
+                    ctx.lineTo(x, h);
+                }
+                for (let j = 0; j <= gy; j++) {
+                    const y = (j / gy) * h;
+                    ctx.moveTo(0, y);
+                    ctx.lineTo(w, y);
+                }
+                ctx.stroke();
+
+                // axes lines
+                ctx.strokeStyle = "rgba(122,162,255,0.65)";
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                const x0 = toX(0);
+                const y0 = toY(0);
+                ctx.moveTo(0, y0);
+                ctx.lineTo(w, y0);
+                ctx.moveTo(x0, 0);
+                ctx.lineTo(x0, h);
+                ctx.stroke();
+                ctx.restore();
+
+                return { toX, toY };
+            }
+
+            function drawTaylor() {
+                if (!tCanvas) return;
+                const ctx = tCanvas.getContext("2d");
+                const w = tCanvas.width;
+                const h = tCanvas.height;
+                ctx.fillStyle =
+                    getComputedStyle(document.documentElement).getPropertyValue("--panel2").trim() || "#0c142c";
+                ctx.fillRect(0, 0, w, h);
+
+                const terms = Number(tTerms.value);
+                const range = T_RANGE_FIXED;
+                const xMarker = 0;
+
+                tTermsLabel.textContent = String(terms);
+
+                const xClamped = clamp(xMarker, -range, range);
+
+                const xmin = -range;
+                const xmax = range;
+                const ymin = -1.4;
+                const ymax = 1.4;
+                const { toX, toY } = drawAxes(ctx, w, h, xmin, xmax, ymin, ymax);
+
+                function plot(fn, color, widthPx) {
+                    ctx.save();
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = widthPx;
+                    ctx.beginPath();
+                    const steps = 550;
+                    for (let i = 0; i <= steps; i++) {
+                        const x = lerp(xmin, xmax, i / steps);
+                        const y = fn(x);
+                        const px = toX(x);
+                        const py = toY(y);
+                        if (i === 0) ctx.moveTo(px, py);
+                        else ctx.lineTo(px, py);
+                    }
+                    ctx.stroke();
+                    ctx.restore();
+                }
+
+                plot((x) => Math.sin(x), "rgba(99,214,164,0.95)", 2.5);
+                plot((x) => sinMaclaurin(x, terms), "rgba(255,204,102,0.95)", 2.5);
+
+                // marker and error
+                const yTrue = Math.sin(xClamped);
+                const yApprox = sinMaclaurin(xClamped, terms);
+                const err = yApprox - yTrue;
+                const absErr = Math.abs(err);
+
+                const dotKind = absErr < 0.01 ? "good" : absErr < 0.05 ? "warn" : "bad";
+                const dot = tErrorBadge.querySelector(".dot");
+                dot.classList.remove("good", "warn", "bad");
+                dot.classList.add(dotKind);
+                tErrorBadge.childNodes[1].nodeValue = ` error: ${absErr.toFixed(6)}`;
+
+                ctx.save();
+                ctx.strokeStyle = "rgba(255,255,255,0.55)";
+                ctx.setLineDash([6, 6]);
+                ctx.beginPath();
+                ctx.moveTo(toX(xClamped), 0);
+                ctx.lineTo(toX(xClamped), h);
+                ctx.stroke();
+                ctx.restore();
+
+                // show points
+                function drawPoint(x, y, color) {
+                    ctx.save();
+                    ctx.fillStyle = color;
+                    ctx.beginPath();
+                    ctx.arc(toX(x), toY(y), 5, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.restore();
+                }
+                drawPoint(xClamped, yTrue, "rgba(99,214,164,1)");
+                drawPoint(xClamped, yApprox, "rgba(255,204,102,1)");
+
+                tFormula.innerHTML =
+                    "<div>We approximate the sine value by adding up <b>N</b> terms of a repeating pattern.</div>" +
+                    "<div class=\"eq\">sin(x) ≈ Σ (k = 0 to N−1) (−1)ᵏ · x^(2k+1) ÷ (2k+1)!</div>" +
+                    "<div>What each symbol means:</div>" +
+                    "<ul>" +
+                    "<li><b>x</b>: the input angle (in radians)</li>" +
+                    "<li><b>N</b>: how many terms you add (more terms usually means better accuracy)</li>" +
+                    "<li><b>k</b>: the term index (0, 1, 2, …)</li>" +
+                    "<li><b>!</b>: factorial (for example, 5! = 5·4·3·2·1)</li>" +
+                    "</ul>" +
+                    `<div class=\"small\">Current values: N=${terms}, x=${xClamped.toFixed(3)}, sin(x)=${yTrue.toFixed(6)}, approximation=${yApprox.toFixed(6)}, error=${err.toFixed(6)}</div>`;
+            }
+
+            for (const el of [tTerms]) el.addEventListener("input", drawTaylor);
+            tReset.addEventListener("click", () => {
+                tTerms.value = "5";
+                drawTaylor();
+            });
+
+            /**
+             * GPS trilateration (2D)
+             */
+            const gCanvas = $("#gCanvas");
+            const gCount = $("#gCount");
+            const gCountLabel = $("#gCountLabel");
+            const gRandom = $("#gRandom");
+            const gSolve = $("#gSolve");
+            const gReadout = $("#gReadout");
+
+            const GPS_WORLD_W = 100;
+            const GPS_WORLD_H = 70;
+            const PLANET = { x: 50, y: 35, r: 18 };
+
+            const gps = {
+                satellites: [],
+                truePos: { x: 0, y: 0 },
+                distances: [],
+                estimate: { x: 0, y: 0 },
+                receiverAngle: 0,
+            };
+
+            function rand(min, max) {
+                return min + Math.random() * (max - min);
+            }
+
+            function clampWorld(p) {
+                return {
+                    x: clamp(p.x, 0.5, GPS_WORLD_W - 0.5),
+                    y: clamp(p.y, 0.5, GPS_WORLD_H - 0.5),
+                };
+            }
+
+            function setReceiverPos(pos) {
+                // Keep the receiver inside the planet disk.
+                const dx = pos.x - PLANET.x;
+                const dy = pos.y - PLANET.y;
+                const dist = Math.hypot(dx, dy);
+                if (dist <= PLANET.r || dist === 0) {
+                    gps.truePos = { x: pos.x, y: pos.y };
+                    return;
+                }
+                const k = PLANET.r / dist;
+                gps.truePos = { x: PLANET.x + dx * k, y: PLANET.y + dy * k };
+            }
+
+            function updateGPSDistances() {
+                gps.distances = gps.satellites.map((s) => Math.hypot(gps.truePos.x - s.x, gps.truePos.y - s.y));
+            }
+
+            function initGPS() {
+                const count = Number(gCount.value);
+                gps.satellites = [];
+
+                // Place satellites on a large ring around the fixed planet.
+                for (let i = 0; i < count; i++) {
+                    const angle = (i / count) * Math.PI * 2;
+                    const r = 42;
+                    gps.satellites.push(clampWorld({ x: PLANET.x + Math.cos(angle) * r, y: PLANET.y + Math.sin(angle) * r }));
+                }
+
+                // Receiver starts inside the planet.
+                setReceiverPos({ x: PLANET.x, y: PLANET.y });
+                updateGPSDistances();
+                // Start estimate near center
+                gps.estimate = { x: 50, y: 35 };
+                solveGPS();
+            }
+
+            let gpsInitialized = false;
+            function ensureGpsInitialized() {
+                if (!gpsInitialized) {
+                    gpsInitialized = true;
+                    syncGPSLabels();
+                    initGPS();
+                    return;
+                }
+                drawGPS();
+            }
+
+            function solveGPS() {
+                // Ideal trilateration using exact distances.
+                // Subtract the first circle equation from the others to get a linear system in (x, y).
+                const sats = gps.satellites;
+                const dObs = gps.distances;
+                if (sats.length < 3) return;
+
+                const x1 = sats[0].x;
+                const y1 = sats[0].y;
+                const d1 = dObs[0];
+
+                // Solve least squares for A·p = b where p = [x, y]. With exact distances, this should be near-exact.
+                // Accumulate normal equations: (A^T A) p = (A^T b)
+                let ata11 = 0,
+                    ata12 = 0,
+                    ata22 = 0;
+                let atb1 = 0,
+                    atb2 = 0;
+
+                for (let i = 1; i < sats.length; i++) {
+                    const xi = sats[i].x;
+                    const yi = sats[i].y;
+                    const di = dObs[i];
+
+                    const a1 = 2 * (xi - x1);
+                    const a2 = 2 * (yi - y1);
+                    const b =
+                        xi * xi - x1 * x1 +
+                        yi * yi - y1 * y1 +
+                        d1 * d1 - di * di;
+
+                    ata11 += a1 * a1;
+                    ata12 += a1 * a2;
+                    ata22 += a2 * a2;
+                    atb1 += a1 * b;
+                    atb2 += a2 * b;
+                }
+
+                const det = ata11 * ata22 - ata12 * ata12;
+                if (Math.abs(det) < 1e-12) return;
+
+                const x = (atb1 * ata22 - atb2 * ata12) / det;
+                const y = (ata11 * atb2 - ata12 * atb1) / det;
+
+                gps.estimate = { x, y };
+                updateGPSReadout();
+                drawGPS();
+            }
+
+            function updateGPSReadout() {
+                const e = Math.hypot(gps.estimate.x - gps.truePos.x, gps.estimate.y - gps.truePos.y);
+                gReadout.textContent =
+                    `True position:      (${gps.truePos.x.toFixed(2)}, ${gps.truePos.y.toFixed(2)})\n` +
+                    `Estimated position: (${gps.estimate.x.toFixed(2)}, ${gps.estimate.y.toFixed(2)})\n` +
+                    `Position error:     ${e.toFixed(6)}`;
+            }
+
+            function drawGPS() {
+                if (!gCanvas) return;
+                const ctx = gCanvas.getContext("2d");
+                const w = gCanvas.width;
+                const h = gCanvas.height;
+                ctx.fillStyle =
+                    getComputedStyle(document.documentElement).getPropertyValue("--panel2").trim() || "#0c142c";
+                ctx.fillRect(0, 0, w, h);
+
+                const { toX, toY, toR, margin, plotW, plotH } = getGPSCanvasTransform();
+
+                const theme = getComputedStyle(document.documentElement);
+                const satPalette = [
+                    theme.getPropertyValue("--accent").trim() || "#7aa2ff",
+                    theme.getPropertyValue("--good").trim() || "#63d6a4",
+                    theme.getPropertyValue("--warn").trim() || "#ffcc66",
+                    theme.getPropertyValue("--bad").trim() || "#ff6b7a",
+                ];
+
+                // grid
+                ctx.save();
+                ctx.strokeStyle = "rgba(255,255,255,0.16)";
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                for (let i = 0; i <= 10; i++) {
+                    const x = lerp(margin, margin + plotW, i / 10);
+                    ctx.moveTo(x, margin);
+                    ctx.lineTo(x, margin + plotH);
+                }
+                for (let j = 0; j <= 7; j++) {
+                    const y = lerp(margin, margin + plotH, j / 7);
+                    ctx.moveTo(margin, y);
+                    ctx.lineTo(margin + plotW, y);
+                }
+                ctx.stroke();
+                ctx.restore();
+
+                // fixed planet (blue)
+                ctx.save();
+                ctx.fillStyle = "rgba(37,99,235,0.18)";
+                ctx.strokeStyle = "rgba(37,99,235,0.55)";
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(toX(PLANET.x), toY(PLANET.y), toR(PLANET.r), 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+                ctx.restore();
+
+                // distance circles (exact)
+                ctx.save();
+                ctx.lineWidth = 1.6;
+                for (let i = 0; i < gps.satellites.length; i++) {
+                    const s = gps.satellites[i];
+                    const r = gps.distances[i];
+                    ctx.strokeStyle = satPalette[i % satPalette.length];
+                    ctx.globalAlpha = 0.38;
+                    ctx.beginPath();
+                    ctx.arc(toX(s.x), toY(s.y), toR(r), 0, Math.PI * 2);
+                    ctx.stroke();
+                }
+                ctx.restore();
+
+                // satellites
+                ctx.save();
+                for (let i = 0; i < gps.satellites.length; i++) {
+                    const s = gps.satellites[i];
+                    ctx.fillStyle = satPalette[i % satPalette.length];
+                    ctx.beginPath();
+                    ctx.arc(toX(s.x), toY(s.y), 6, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                ctx.restore();
+
+                // true receiver
+                ctx.save();
+                ctx.fillStyle = "rgba(99,214,164,0.98)";
+                ctx.beginPath();
+                ctx.arc(toX(gps.truePos.x), toY(gps.truePos.y), 7, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+
+                // estimate
+                ctx.save();
+                ctx.fillStyle = "rgba(255,204,102,0.98)";
+                ctx.beginPath();
+                ctx.arc(toX(gps.estimate.x), toY(gps.estimate.y), 7, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+
+                // error line
+                ctx.save();
+                ctx.strokeStyle = "rgba(255,255,255,0.45)";
+                ctx.setLineDash([6, 6]);
+                ctx.beginPath();
+                ctx.moveTo(toX(gps.truePos.x), toY(gps.truePos.y));
+                ctx.lineTo(toX(gps.estimate.x), toY(gps.estimate.y));
+                ctx.stroke();
+                ctx.restore();
+            }
+
+            function getGPSCanvasTransform() {
+                const w = gCanvas.width;
+                const h = gCanvas.height;
+                const margin = 40;
+
+                // Uniform scale so world-space circles stay circles on screen.
+                const sx = (w - margin * 2) / GPS_WORLD_W;
+                const sy = (h - margin * 2) / GPS_WORLD_H;
+                const s = Math.min(sx, sy);
+
+                const plotW = GPS_WORLD_W * s;
+                const plotH = GPS_WORLD_H * s;
+
+                // Center the plotting area inside the canvas margins.
+                const ox = margin + ((w - margin * 2) - plotW) / 2;
+                const oy = margin + ((h - margin * 2) - plotH) / 2;
+
+                const toX = (x) => ox + x * s;
+                const toY = (y) => oy + y * s;
+                const toR = (r) => r * s;
+                const fromX = (px) => (px - ox) / s;
+                const fromY = (py) => (py - oy) / s;
+
+                return { toX, toY, toR, fromX, fromY, margin: ox, plotW, plotH };
+            }
+
+            let gpsDrag = { kind: null, index: -1 };
+
+            function gpsClientToCanvasPx(clientX, clientY) {
+                const rect = gCanvas.getBoundingClientRect();
+                const sx = gCanvas.width / rect.width;
+                const sy = gCanvas.height / rect.height;
+                return {
+                    x: (clientX - rect.left) * sx,
+                    y: (clientY - rect.top) * sy,
+                };
+            }
+
+            function gpsPickAt(clientX, clientY) {
+                const { x: px, y: py } = gpsClientToCanvasPx(clientX, clientY);
+                const { toX, toY } = getGPSCanvasTransform();
+
+                const hitR = 12;
+
+                // receiver first
+                const rx = toX(gps.truePos.x);
+                const ry = toY(gps.truePos.y);
+                if (Math.hypot(px - rx, py - ry) <= hitR) {
+                    return { kind: "receiver", index: -1 };
+                }
+
+                for (let i = 0; i < gps.satellites.length; i++) {
+                    const s = gps.satellites[i];
+                    const sx = toX(s.x);
+                    const sy = toY(s.y);
+                    if (Math.hypot(px - sx, py - sy) <= hitR) {
+                        return { kind: "sat", index: i };
+                    }
+                }
+                return { kind: null, index: -1 };
+            }
+
+            function gpsDragMove(clientX, clientY) {
+                if (!gpsDrag.kind) return;
+                const { x: px, y: py } = gpsClientToCanvasPx(clientX, clientY);
+                const { fromX, fromY } = getGPSCanvasTransform();
+                const wx = fromX(px);
+                const wy = fromY(py);
+
+                if (gpsDrag.kind === "sat") {
+                    gps.satellites[gpsDrag.index] = clampWorld({ x: wx, y: wy });
+                    updateGPSDistances();
+                    solveGPS();
+                    return;
+                }
+
+                if (gpsDrag.kind === "receiver") {
+                    setReceiverPos({ x: wx, y: wy });
+                    updateGPSDistances();
+                    solveGPS();
+                }
+            }
+
+            function syncGPSLabels() {
+                gCountLabel.textContent = String(gCount.value);
+            }
+
+            gCount.addEventListener("input", () => {
+                syncGPSLabels();
+                initGPS();
+            });
+            gRandom.addEventListener("click", () => {
+                initGPS();
+            });
+            gSolve.addEventListener("click", () => {
+                solveGPS();
+            });
+
+            // Drag satellites and receiver point
+            if (gCanvas) {
+                // Prevent the browser from treating drags as scroll/zoom gestures.
+                gCanvas.style.touchAction = "none";
+
+                gCanvas.addEventListener("pointerdown", (e) => {
+                    const pick = gpsPickAt(e.clientX, e.clientY);
+                    if (!pick.kind) return;
+                    gpsDrag = pick;
+                    try {
+                        gCanvas.setPointerCapture(e.pointerId);
+                    } catch {
+                        // ignore
+                    }
+                    gpsDragMove(e.clientX, e.clientY);
+                });
+
+                gCanvas.addEventListener("pointermove", (e) => {
+                    if (!gpsDrag.kind) return;
+                    gpsDragMove(e.clientX, e.clientY);
+                });
+
+                const endDrag = () => {
+                    gpsDrag = { kind: null, index: -1 };
+                };
+                gCanvas.addEventListener("pointerup", endDrag);
+                gCanvas.addEventListener("pointercancel", endDrag);
+                gCanvas.addEventListener("pointerleave", endDrag);
+            }
+
+            /**
+             * Noise cancellation waves
+             */
+            const nCanvas = $("#nCanvas");
+            const nCanvasResult = $("#nCanvasResult");
+            const nIdeal = $("#nIdeal");
+            const nRandom = $("#nRandom");
+            const nPhase = $("#nPhase");
+            const nPhaseLabel = $("#nPhaseLabel");
+
+            const NOISE_FREQ = 4;
+            const NOISE_AMP = 1;
+
+            let noiseInitialized = false;
+            function ensureNoiseInitialized() {
+                if (!noiseInitialized) noiseInitialized = true;
+                drawNoise();
+            }
+
+            function drawNoise() {
+                if (!nCanvas || !nCanvasResult) return;
+                const themePanel =
+                    getComputedStyle(document.documentElement).getPropertyValue("--panel2").trim() || "#0c142c";
+
+                const freq = NOISE_FREQ;
+                const amp = NOISE_AMP;
+                const antiAmp = NOISE_AMP;
+                const phaseDeg = Number(nPhase.value);
+                const phaseRad = degToRad(phaseDeg);
+                const phaseFixed = Math.PI;
+
+                nPhaseLabel.textContent = `${Math.round(phaseDeg)}°`;
+
+                const xmin = 0;
+                const xmax = 1;
+                const ymin = -1.6;
+                const ymax = 1.6;
+
+                function clearAndGrid(ctx, w, h) {
+                    ctx.fillStyle = themePanel;
+                    ctx.fillRect(0, 0, w, h);
+
+                    // axes + grid
+                    ctx.save();
+                    ctx.strokeStyle = "rgba(255,255,255,0.18)";
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    for (let i = 0; i <= 10; i++) {
+                        const x = (i / 10) * w;
+                        ctx.moveTo(x, 0);
+                        ctx.lineTo(x, h);
+                    }
+                    for (let j = 0; j <= 8; j++) {
+                        const y = (j / 8) * h;
+                        ctx.moveTo(0, y);
+                        ctx.lineTo(w, y);
+                    }
+                    ctx.stroke();
+                    ctx.restore();
+
+                    const toY = (y) => h - ((y - ymin) / (ymax - ymin)) * h;
+                    ctx.save();
+                    ctx.strokeStyle = "rgba(122,162,255,0.55)";
+                    ctx.lineWidth = 1.4;
+                    ctx.beginPath();
+                    ctx.moveTo(0, toY(0));
+                    ctx.lineTo(w, toY(0));
+                    ctx.stroke();
+                    ctx.restore();
+                }
+
+                function plotOn(ctx, w, h, fn, color) {
+                    const toX = (x) => ((x - xmin) / (xmax - xmin)) * w;
+                    const toY = (y) => h - ((y - ymin) / (ymax - ymin)) * h;
+                    ctx.save();
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = 2.3;
+                    ctx.beginPath();
+                    const steps = 600;
+                    for (let i = 0; i <= steps; i++) {
+                        const x = i / steps;
+                        const y = fn(x);
+                        const px = toX(x);
+                        const py = toY(y);
+                        if (i === 0) ctx.moveTo(px, py);
+                        else ctx.lineTo(px, py);
+                    }
+                    ctx.stroke();
+                    ctx.restore();
+                }
+
+                function wave(x) {
+                    return amp * Math.sin(2 * Math.PI * freq * x);
+                }
+                function antiFixed(x) {
+                    // Keep the blue wave visually constant.
+                    return antiAmp * Math.sin(2 * Math.PI * freq * x + phaseFixed);
+                }
+                function antiApplied(x) {
+                    // Keep intersections fixed while still reflecting phase difference.
+                    // Interpret the slider as phase mismatch that reduces effective cancellation strength
+                    // without shifting the wave horizontally.
+                    // 0° => strength 0 (no cancellation), 180° => strength 1 (full cancellation).
+                    const strength = (1 - Math.cos(phaseRad)) / 2;
+                    return antiFixed(x) * strength;
+                }
+                function sum(x) {
+                    // True point-by-point resultant.
+                    return wave(x) + antiApplied(x);
+                }
+
+                // Top graph: original + anti-noise
+                {
+                    const ctx = nCanvas.getContext("2d");
+                    const w = nCanvas.width;
+                    const h = nCanvas.height;
+                    clearAndGrid(ctx, w, h);
+                    plotOn(ctx, w, h, wave, "rgba(255,107,122,0.92)");
+                    plotOn(ctx, w, h, antiFixed, "rgba(122,162,255,0.92)");
+                }
+
+                // Bottom graph: resultant only
+                {
+                    const ctx = nCanvasResult.getContext("2d");
+                    const w = nCanvasResult.width;
+                    const h = nCanvasResult.height;
+                    clearAndGrid(ctx, w, h);
+                    plotOn(ctx, w, h, sum, "rgba(99,214,164,0.92)");
+
+                    // Show "Silence" near perfect cancellation.
+                    const normalizedPhase = ((phaseDeg % 360) + 360) % 360;
+                    if (normalizedPhase >= 160 && normalizedPhase <= 200) {
+                        ctx.save();
+                        ctx.fillStyle = "rgba(99,214,164,0.95)";
+                        ctx.font = "700 28px " + getComputedStyle(document.documentElement).getPropertyValue("--sans").trim();
+                        ctx.textAlign = "center";
+                        ctx.textBaseline = "middle";
+                        ctx.fillText("Silence", w / 2, h / 2);
+                        ctx.restore();
+                    }
+                }
+            }
+
+            nPhase.addEventListener("input", drawNoise);
+            nIdeal.addEventListener("click", () => {
+                nPhase.value = "180";
+                drawNoise();
+            });
+            nRandom.addEventListener("click", () => {
+                nPhase.value = String(Math.round(rand(0, 360)));
+                drawNoise();
+            });
+
+            /**
+             * Boot
+             */
+            function boot() {
+                // Intentionally do nothing on load.
+                // Demos initialize only after a user clicks a topic tab.
+
+                // Ensure the empty state is visible and no panels are shown.
+                clearActiveTab();
+            }
+
+            window.addEventListener("load", boot);
+        </script>
+    </body>
 </html>
